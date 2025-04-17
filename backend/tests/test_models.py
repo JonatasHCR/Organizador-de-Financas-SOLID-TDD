@@ -1,5 +1,7 @@
 from datetime import date
 
+from app.models.model_ativo import ModelAtivo
+
 
 class TestModels:
     def test_model_ativo(self):
