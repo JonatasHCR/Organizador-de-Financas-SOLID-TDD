@@ -2,6 +2,7 @@ from datetime import date
 
 from app.models.model_ativo import ModelAtivo
 from app.models.model_passivo import ModelPassivo
+from app.models.model_investimento import ModelInvestimento
 
 
 class TestModels:
