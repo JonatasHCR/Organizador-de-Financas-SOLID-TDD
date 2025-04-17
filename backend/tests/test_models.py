@@ -52,3 +52,24 @@ class TestModels:
         except Exception as e:
             print(e)
             assert False
+
+    def test_model_investimento(self):
+        id_teste = 1
+        nome_teste = "despesa"
+        descricao_teste = "teste"
+        tipo_investimento_teste = "A"
+        valor_teste = 50.0
+        data_teste = date.today()
+        try:
+            modelo_teste = ModelInvestimento(
+                id=id_teste,
+                nome=nome_teste,
+                descricao=descricao_teste,
+                tipo_investimento=tipo_investimento_teste,
+                valor=valor_teste,
+                data_investimento=data_teste,
+            )
+            assert True
+        except Exception as e:
+            print(e)
+            assert False
