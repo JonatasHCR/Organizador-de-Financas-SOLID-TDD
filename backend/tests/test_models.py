@@ -8,7 +8,7 @@ from app.models.model_investimento import ModelInvestimento
 class TestModels:
     def test_model_ativo(self):
         id_teste = 1
-        nome_teste = "salario"
+        nome_teste = "ativo"
         descricao_teste = "teste"
         valor_teste = 50.0
         data_teste = date.today()
@@ -58,7 +58,7 @@ class TestModels:
 
     def test_model_investimento(self):
         id_teste = 1
-        nome_teste = "despesa"
+        nome_teste = "investimento"
         descricao_teste = "teste"
         tipo_investimento_teste = "A"
         valor_teste = 50.0
