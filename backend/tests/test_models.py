@@ -20,7 +20,7 @@ class TestModels:
                 nome=nome_teste,
                 descricao=descricao_teste,
                 valor=valor_teste,
-                data_recebimento=data_teste,
+                data=data_teste,
                 fixo=fixo_teste,
                 tipo_remuneracao=tipo_renumeracao_teste,
             )
@@ -44,10 +44,10 @@ class TestModels:
                 nome=nome_teste,
                 descricao=descricao_teste,
                 valor=valor_teste,
-                data_pagamento=data_teste,
+                data=data_teste,
                 fixo=fixo_teste,
                 vencimento=vencimento_teste,
-                plano_pagamento=plano_pagamento_teste,
+                plano=plano_pagamento_teste,
             )
             assert True
         except Exception as error:
@@ -66,9 +66,9 @@ class TestModels:
                 id=id_teste,
                 nome=nome_teste,
                 descricao=descricao_teste,
-                tipo_investimento=tipo_investimento_teste,
+                tipo=tipo_investimento_teste,
                 valor=valor_teste,
-                data_investimento=data_teste,
+                data=data_teste,
             )
             assert True
         except Exception as error:
