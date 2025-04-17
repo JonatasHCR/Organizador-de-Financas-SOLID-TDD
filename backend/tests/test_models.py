@@ -26,7 +26,8 @@ class TestModels:
             )
             assert True
         except Exception as error:
-            print(error)
+            print("Tipo do erro:", type(error).__name__)
+            print("Mensagem:", str(error))
             assert False
 
     def test_model_passivo(self):
@@ -51,7 +52,8 @@ class TestModels:
             )
             assert True
         except Exception as error:
-            print(error)
+            print("Tipo do erro:", type(error).__name__)
+            print("Mensagem:", str(error))
             assert False
 
     def test_model_investimento(self):
@@ -72,5 +74,6 @@ class TestModels:
             )
             assert True
         except Exception as error:
-            print(error)
+            print("Tipo do erro:", type(error).__name__)
+            print("Mensagem:", str(error))
             assert False

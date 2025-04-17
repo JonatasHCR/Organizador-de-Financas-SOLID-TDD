@@ -36,7 +36,8 @@ class TestRepositoryAtivo:
                 assert False
 
         except Exception as error:
-            print(error)
+            print("Tipo do erro:", type(error).__name__)
+            print("Mensagem:", str(error))
             assert False
         finally:
             cursor.close()

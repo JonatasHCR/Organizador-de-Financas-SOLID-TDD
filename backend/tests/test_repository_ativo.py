@@ -2,8 +2,10 @@ from os import getenv
 
 from psycopg2 import connect
 from dotenv import load_dotenv
+import pytest
 
 from app.repository.repository_ativo import RepositoryAtivo
+from app.models.model_ativo import ModelAtivo
 
 load_dotenv()
 
@@ -36,7 +38,8 @@ class TestRepositoryAtivo:
                 assert False
 
         except Exception as error:
-            print(error)
+            print("Tipo do erro:", type(error).__name__)
+            print("Mensagem:", str(error))
             assert False
         finally:
             cursor.close()
