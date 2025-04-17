@@ -8,7 +8,7 @@ from app.repository.repository_ativo import RepositoryAtivo
 load_dotenv()
 
 
-class TestRepository:
+class TestRepositoryAtivo:
     def test_criacao_tabela_ativos(self):
         try:
             repository = RepositoryAtivo()
