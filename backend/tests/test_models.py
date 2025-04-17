@@ -25,8 +25,8 @@ class TestModels:
                 tipo_remuneracao=tipo_renumeracao_teste,
             )
             assert True
-        except Exception as e:
-            print(e)
+        except Exception as error:
+            print(error)
             assert False
 
     def test_model_passivo(self):
@@ -50,8 +50,8 @@ class TestModels:
                 plano_pagamento=plano_pagamento_teste,
             )
             assert True
-        except Exception as e:
-            print(e)
+        except Exception as error:
+            print(error)
             assert False
 
     def test_model_investimento(self):
@@ -71,6 +71,6 @@ class TestModels:
                 data_investimento=data_teste,
             )
             assert True
-        except Exception as e:
-            print(e)
+        except Exception as error:
+            print(error)
             assert False
