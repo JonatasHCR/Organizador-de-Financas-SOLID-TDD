@@ -13,3 +13,7 @@ class Repository(ABC):
     @abstractmethod
     def criar_tabela(self):
         pass
+
+    @abstractmethod
+    def inserir(self):
+        pass

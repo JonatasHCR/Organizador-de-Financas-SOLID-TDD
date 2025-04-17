@@ -4,6 +4,7 @@ import psycopg2
 from dotenv import load_dotenv
 
 from .repository import Repository
+from app.models.model_ativo import ModelAtivo
 
 load_dotenv()
 
@@ -37,16 +38,41 @@ class RepositoryAtivo(Repository):
             query = """
             CREATE TABLE IF NOT EXISTS ativos (
                 id SERIAL PRIMARY KEY,
-                name VARCHAR(25) NOT NULL,
+                nome VARCHAR(25) NOT NULL,
                 descricao TEXT,
                 valor REAL NOT NULL,
                 data DATE NOT NULL,
-                fixo CHAR(1) NOT NULL,
+                fixo CHAR(1) NOT NULL CHECK (fixo IN ('S', 'N')),
                 tipo_remuneracao VARCHAR(1)
             );
             """
 
             self.cursor.execute(query)
+            self.conenection.commit()
+
+        finally:
+            self.desconectar()
+
+    def inserir(self, ativo: ModelAtivo):
+        try:
+            self.connectar()
+
+            query = """
+            INSERT INTO ativos (nome, descricao, valor, data, fixo, tipo_remuneracao)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            """
+
+            self.cursor.execute(
+                query,
+                (
+                    ativo.nome,
+                    ativo.descricao,
+                    ativo.valor,
+                    ativo.data,
+                    ativo.fixo,
+                    ativo.tipo_remuneracao,
+                ),
+            )
             self.conenection.commit()
 
         finally:

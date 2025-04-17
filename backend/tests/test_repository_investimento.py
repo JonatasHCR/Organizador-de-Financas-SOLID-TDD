@@ -44,7 +44,7 @@ class TestRepositoryInvestimento:
         finally:
             cursor.close()
 
-    def test_inserir_dado_na_tabela():
+    def test_inserir_dado_na_tabela(self):
         try:
             repository = RepositoryInvestimento()
 

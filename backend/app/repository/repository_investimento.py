@@ -4,6 +4,7 @@ import psycopg2
 from dotenv import load_dotenv
 
 from .repository import Repository
+from app.models.model_investimento import ModelInvestimento
 
 load_dotenv()
 
@@ -37,15 +38,39 @@ class RepositoryInvestimento(Repository):
             query = """
             CREATE TABLE IF NOT EXISTS investimentos (
                 id SERIAL PRIMARY KEY,
-                name VARCHAR(25) NOT NULL,
+                nome VARCHAR(25) NOT NULL,
                 descricao TEXT,
-                tipo CHAR(1) NOT NULL,
+                tipo CHAR(1) NOT NULL CHECK (tipo IN ('A', 'FII', 'C', 'ETF', 'ETFI', 'AI', 'TD', 'RF')),
                 valor REAL NOT NULL,
                 data DATE NOT NULL
             );
             """
 
             self.cursor.execute(query)
+            self.conenection.commit()
+
+        finally:
+            self.desconectar()
+
+    def inserir(self, investimento: ModelInvestimento):
+        try:
+            self.connectar()
+
+            query = """
+            INSERT INTO investimentos (nome, descricao, tipo, valor, data)
+            VALUES (%s, %s, %s, %s, %s)
+            """
+
+            self.cursor.execute(
+                query,
+                (
+                    investimento.nome,
+                    investimento.descricao,
+                    investimento.tipo,
+                    investimento.valor,
+                    investimento.data,
+                ),
+            )
             self.conenection.commit()
 
         finally:

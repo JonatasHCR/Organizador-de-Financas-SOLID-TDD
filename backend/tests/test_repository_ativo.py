@@ -44,7 +44,7 @@ class TestRepositoryAtivo:
         finally:
             cursor.close()
 
-    def test_inserir_dado_na_tabela():
+    def test_inserir_dado_na_tabela(self):
         try:
             repository = RepositoryAtivo()
 
@@ -76,7 +76,7 @@ class TestRepositoryAtivo:
             )
             cursor = conenection.cursor()
 
-            query = """SELECT * FROM investimentos"""
+            query = """SELECT * FROM ativos"""
 
             cursor.execute(query)
             existe = cursor.fetchone()
