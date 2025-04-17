@@ -3,6 +3,7 @@ from os import getenv
 from psycopg2 import connect
 from dotenv import load_dotenv
 
+from app.repository.repository_passivo import RepositoryPassivo
 
 load_dotenv()
 
