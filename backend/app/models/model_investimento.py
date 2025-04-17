@@ -7,13 +7,13 @@ class ModelInvestimento:
         id: int,
         nome: str,
         descricao: str,
-        tipo_investimento: str,
+        tipo: str,
         valor: float,
-        data_investimento: date,
+        data: date,
     ):
         self.id = id
         self.nome = nome
         self.descricao = descricao
-        self.tipo_investimento = tipo_investimento
+        self.tipo = tipo
         self.valor = valor
-        self.data_investimento = data_investimento
+        self.data = data

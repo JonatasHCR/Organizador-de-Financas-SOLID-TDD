@@ -8,16 +8,16 @@ class ModelPassivo:
         nome: str,
         descricao: str,
         valor: float,
-        data_pagamento: date,
+        data: date,
         fixo: str,
         vencimento: date,
-        plano_pagamento: str,
+        plano: str,
     ):
         self.id = id
         self.nome = nome
         self.descricao = descricao
         self.valor = valor
-        self.data_pagamento = data_pagamento
+        self.data = data
         self.fixo = fixo
         self.vencimento = vencimento
-        self.plano_pagamento = plano_pagamento
+        self.plano = plano

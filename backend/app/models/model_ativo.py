@@ -8,7 +8,7 @@ class ModelAtivo:
         nome: str,
         descricao: str,
         valor: float,
-        data_recebimento: date,
+        data: date,
         fixo: str,
         tipo_remuneracao: str,
     ):
@@ -16,6 +16,6 @@ class ModelAtivo:
         self.nome = nome
         self.descricao = descricao
         self.valor = valor
-        self.data_recebimento = data_recebimento
+        self.data = data
         self.fixo = fixo
         self.tipo_remuneracao = tipo_remuneracao

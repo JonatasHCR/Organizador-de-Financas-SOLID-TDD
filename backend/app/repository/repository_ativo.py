@@ -40,7 +40,7 @@ class RepositoryAtivo(Repository):
                 name VARCHAR(25) NOT NULL,
                 descricao TEXT,
                 valor REAL NOT NULL,
-                data_recebimento DATE NOT NULL,
+                data DATE NOT NULL,
                 fixo CHAR(1) NOT NULL,
                 tipo_remuneracao VARCHAR(1)
             );

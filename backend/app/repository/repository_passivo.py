@@ -40,10 +40,10 @@ class RepositoryPassivo(Repository):
                 name VARCHAR(25) NOT NULL,
                 descricao TEXT,
                 valor REAL NOT NULL,
-                data_pagamento DATE NOT NULL,
+                data DATE NOT NULL,
                 fixo CHAR(1) NOT NULL,
                 vencimento DATE,
-                plano_pagamento VARCHAR(1)
+                plano VARCHAR(1)
             );
             """
 
