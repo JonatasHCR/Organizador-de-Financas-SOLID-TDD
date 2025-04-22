@@ -19,3 +19,6 @@ class ModelAtivo:
         self.data = data
         self.fixo = fixo
         self.tipo_remuneracao = tipo_remuneracao
+
+    def to_list(self) -> list:
+        return list(self.__dict__.values())

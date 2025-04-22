@@ -21,3 +21,6 @@ class ModelPassivo:
         self.fixo = fixo
         self.vencimento = vencimento
         self.plano = plano
+
+    def to_list(self) -> list:
+        return list(self.__dict__.values())

@@ -17,3 +17,6 @@ class ModelInvestimento:
         self.tipo = tipo
         self.valor = valor
         self.data = data
+
+    def to_list(self) -> list:
+        return list(self.__dict__.values())
