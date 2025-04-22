@@ -53,7 +53,7 @@ class TestRepositoryInvestimento:
             repository = RepositoryInvestimento()
 
             id_teste = 1
-            nome_teste = "despesa"
+            nome_teste = "investimento"
             descricao_teste = "teste"
             tipo_investimento_teste = "A"
             valor_teste = 50.0
@@ -93,3 +93,52 @@ class TestRepositoryInvestimento:
             assert False
         finally:
             cursor.close()
+    
+    def test_modificar_dado_na_tabela(self):
+        try:
+            repository = RepositoryInvestimento()
+
+            id_teste = 1
+            nome_teste = "investimento_alterado"
+            descricao_teste = "teste_alterado"
+            tipo_investimento_teste = "A"
+            valor_teste = 50.0
+            data_teste = date.today()
+
+            modelo_teste = ModelInvestimento(
+                id=id_teste,
+                nome=nome_teste,
+                descricao=descricao_teste,
+                tipo=tipo_investimento_teste,
+                valor=valor_teste,
+                data=data_teste,
+            )
+
+
+            repository.modificar(modelo_teste)
+
+            conenection = connect(
+                host=getenv("HOST"),
+                database=getenv("DATABASE"),
+                user=getenv("USER"),
+                password=getenv("PASSWORD"),
+            )
+            cursor = conenection.cursor()
+
+            query = """SELECT * FROM investimentos WHERE id = %s"""
+
+            cursor.execute(query, (modelo_teste.id))
+            existe = cursor.fetchone()
+            if existe:
+                assert existe[0][1] == nome_teste
+                assert existe[0][2] == descricao_teste
+            else:
+                assert False
+
+        except Exception as error:
+            print("Tipo do erro:", type(error).__name__)
+            print("Mensagem:", str(error))
+            assert False
+        finally:
+            cursor.close()
+
