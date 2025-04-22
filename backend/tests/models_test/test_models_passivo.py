@@ -16,7 +16,7 @@ import config.config
 class TestModelsPassivo:
     def test_model_passivo(self):
         id_teste = 1
-        nome_teste = "despesa"
+        nome_teste = "passivo"
         descricao_teste = "teste"
         valor_teste = 50.0
         data_teste = date.today()

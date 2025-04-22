@@ -145,3 +145,50 @@ class TestRepositoryInvestimento:
             assert False
         finally:
             cursor.close()
+    
+    def test_deletar_dado_na_tabela(self):
+        try:
+            repository = RepositoryInvestimento()
+            repository.database = getenv("DATABASE_TESTE")
+
+            id_teste = 1
+            nome_teste = "investimento_alterado"
+            descricao_teste = "teste_alterado"
+            tipo_investimento_teste = "A"
+            valor_teste = 50.0
+            data_teste = date.today()
+
+            modelo_teste = ModelInvestimento(
+                id=id_teste,
+                nome=nome_teste,
+                descricao=descricao_teste,
+                tipo=tipo_investimento_teste,
+                valor=valor_teste,
+                data=data_teste,
+            )
+
+            repository.deletar(modelo_teste)
+
+            conenection = connect(
+                host=getenv("HOST"),
+                database=getenv("DATABASE_TESTE"),
+                user=getenv("USER"),
+                password=getenv("PASSWORD"),
+            )
+            cursor = conenection.cursor()
+
+            query = """SELECT * FROM investimentos WHERE id = %s"""
+
+            cursor.execute(query, (str(modelo_teste.id)))
+            existe = cursor.fetchone()
+            if existe:
+                assert False
+            else:
+                assert True
+
+        except Exception as error:
+            print("Tipo do erro:", type(error).__name__)
+            print("Mensagem:", str(error))
+            assert False
+        finally:
+            cursor.close()

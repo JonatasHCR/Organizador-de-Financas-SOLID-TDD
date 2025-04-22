@@ -57,7 +57,7 @@ class TestRepositoryPassivo:
             repository.database = getenv("DATABASE_TESTE")
 
             id_teste = 1
-            nome_teste = "despesa"
+            nome_teste = "passivo"
             descricao_teste = "teste"
             valor_teste = 50.0
             data_teste = date.today()
@@ -108,8 +108,8 @@ class TestRepositoryPassivo:
             repository.database = getenv("DATABASE_TESTE")
 
             id_teste = 1
-            nome_teste = "despesa_alterada"
-            descricao_teste = "teste_alterada"
+            nome_teste = "passivo_alterado"
+            descricao_teste = "teste_alterado"
             valor_teste = 50.0
             data_teste = date.today()
             fixo_teste = "N"
@@ -146,6 +146,57 @@ class TestRepositoryPassivo:
                 assert existe[2] == descricao_teste
             else:
                 assert False
+
+        except Exception as error:
+            print("Tipo do erro:", type(error).__name__)
+            print("Mensagem:", str(error))
+            assert False
+        finally:
+            cursor.close()
+    
+    def test_deletar_dado_na_tabela(self):
+        try:
+            repository = RepositoryPassivo()
+            repository.database = getenv("DATABASE_TESTE")
+
+            id_teste = 1
+            nome_teste = "passivo_excluído"
+            descricao_teste = "teste_excluído"
+            valor_teste = 50.0
+            data_teste = date.today()
+            fixo_teste = "N"
+            vencimento_teste = date.today()
+            plano_pagamento_teste = "M"
+
+            modelo_teste = ModelPassivo(
+                id=id_teste,
+                nome=nome_teste,
+                descricao=descricao_teste,
+                valor=valor_teste,
+                data=data_teste,
+                fixo=fixo_teste,
+                vencimento=vencimento_teste,
+                plano=plano_pagamento_teste,
+            )
+
+            repository.deletar(modelo_teste)
+
+            conenection = connect(
+                host=getenv("HOST"),
+                database=getenv("DATABASE_TESTE"),
+                user=getenv("USER"),
+                password=getenv("PASSWORD"),
+            )
+            cursor = conenection.cursor()
+
+            query = """SELECT * FROM passivos WHERE id = %s"""
+
+            cursor.execute(query, (str(modelo_teste.id)))
+            existe = cursor.fetchone()
+            if existe:
+                assert False
+            else:
+                assert True
 
         except Exception as error:
             print("Tipo do erro:", type(error).__name__)
