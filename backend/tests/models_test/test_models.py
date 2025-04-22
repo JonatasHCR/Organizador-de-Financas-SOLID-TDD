@@ -1,9 +1,13 @@
-import os
-import sys
-
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-sys.path.insert(0,PROJECT_ROOT)
+from sys import path
+from os import getenv
 from datetime import date
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+PROJECT_ROOT = getenv("PROJECT_ROOT")
+path.insert(0,PROJECT_ROOT)
 
 from app.models.model_ativo import ModelAtivo
 from app.models.model_passivo import ModelPassivo

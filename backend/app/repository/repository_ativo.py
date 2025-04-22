@@ -1,4 +1,5 @@
 from os import getenv
+from sys import path
 
 import psycopg2
 from dotenv import load_dotenv
@@ -7,6 +8,9 @@ from .repository import Repository
 from app.models.model_ativo import ModelAtivo
 
 load_dotenv()
+
+PROJECT_ROOT = getenv("PROJECT_ROOT")
+path.insert(0, PROJECT_ROOT)
 
 
 class RepositoryAtivo(Repository):
