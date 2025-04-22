@@ -17,3 +17,7 @@ class Repository(ABC):
     @abstractmethod
     def inserir(self):
         pass
+
+    @abstractmethod
+    def modificar(self):
+        pass

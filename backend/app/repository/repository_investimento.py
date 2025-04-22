@@ -70,3 +70,25 @@ class RepositoryInvestimento(Repository):
 
         finally:
             self.desconectar()
+
+    def modificar(self, investimento: ModelInvestimento):
+        try:
+            self.connectar()
+
+            query = """
+            UPDATE investimentos 
+            SET
+                nome = %s, 
+                descricao = %s, 
+                tipo = %s, 
+                valor = %s, 
+                data = %s
+            WHERE id = %s;
+            """
+            valores = investimento.to_list()[1:] + [investimento.id]
+            
+            self.cursor.execute(query, valores)
+            self.conenection.commit()
+
+        finally:
+            self.desconectar()

@@ -127,11 +127,11 @@ class TestRepositoryInvestimento:
 
             query = """SELECT * FROM investimentos WHERE id = %s"""
 
-            cursor.execute(query, (modelo_teste.id))
+            cursor.execute(query, (str(modelo_teste.id)))
             existe = cursor.fetchone()
             if existe:
-                assert existe[0][1] == nome_teste
-                assert existe[0][2] == descricao_teste
+                assert existe[1] == nome_teste
+                assert existe[2] == descricao_teste
             else:
                 assert False
 

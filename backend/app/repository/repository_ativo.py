@@ -71,3 +71,26 @@ class RepositoryAtivo(Repository):
 
         finally:
             self.desconectar()
+
+    def modificar(self, ativo: ModelAtivo):
+        try:
+            self.connectar()
+
+            query = """
+            UPDATE ativos 
+            SET
+                nome = %s, 
+                descricao = %s, 
+                valor = %s, 
+                data = %s, 
+                fixo = %s, 
+                tipo_remuneracao = %s
+            WHERE id = %s;
+            """
+            valores = ativo.to_list()[1:] + [ativo.id]
+            
+            self.cursor.execute(query, valores)
+            self.conenection.commit()
+
+        finally:
+            self.desconectar()
