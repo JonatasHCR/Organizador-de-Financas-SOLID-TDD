@@ -65,16 +65,7 @@ class RepositoryInvestimento(Repository):
             VALUES (%s, %s, %s, %s, %s)
             """
 
-            self.cursor.execute(
-                query,
-                (
-                    investimento.nome,
-                    investimento.descricao,
-                    investimento.tipo,
-                    investimento.valor,
-                    investimento.data,
-                ),
-            )
+            self.cursor.execute(query, investimento.to_list()[1:])
             self.conenection.commit()
 
         finally:

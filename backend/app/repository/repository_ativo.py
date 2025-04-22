@@ -66,17 +66,7 @@ class RepositoryAtivo(Repository):
             VALUES (%s, %s, %s, %s, %s, %s)
             """
 
-            self.cursor.execute(
-                query,
-                (
-                    ativo.nome,
-                    ativo.descricao,
-                    ativo.valor,
-                    ativo.data,
-                    ativo.fixo,
-                    ativo.tipo_remuneracao,
-                ),
-            )
+            self.cursor.execute(query, ativo.to_list()[1:])
             self.conenection.commit()
 
         finally:

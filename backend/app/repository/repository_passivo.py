@@ -67,18 +67,7 @@ class RepositoryPassivo(Repository):
             VALUES (%s, %s, %s, %s, %s, %s, %s)
             """
 
-            self.cursor.execute(
-                query,
-                (
-                    passivo.nome,
-                    passivo.descricao,
-                    passivo.valor,
-                    passivo.data,
-                    passivo.fixo,
-                    passivo.vencimento,
-                    passivo.plano,
-                ),
-            )
+            self.cursor.execute(query, passivo.to_list()[1:])
             self.conenection.commit()
 
         finally:
