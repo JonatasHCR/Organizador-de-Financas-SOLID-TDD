@@ -33,7 +33,7 @@ class TestModelsPassivo:
                 vencimento=vencimento_teste,
                 plano=plano_pagamento_teste,
             )
-            assert True
+            assert len(modelo_teste.to_list()) == 8
         except Exception as error:
             print("Tipo do erro:", type(error).__name__)
             print("Mensagem:", str(error))

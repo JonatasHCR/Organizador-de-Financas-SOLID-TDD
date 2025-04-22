@@ -31,7 +31,7 @@ class TestModelsAtivo:
                 fixo=fixo_teste,
                 tipo_remuneracao=tipo_renumeracao_teste,
             )
-            assert True
+            assert len(modelo_teste.to_list()) == 7
         except Exception as error:
             print("Tipo do erro:", type(error).__name__)
             print("Mensagem:", str(error))

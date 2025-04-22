@@ -29,7 +29,7 @@ class TestModelsInvestimento:
                 valor=valor_teste,
                 data=data_teste,
             )
-            assert True
+            assert len(modelo_teste.to_list()) == 6
         except Exception as error:
             print("Tipo do erro:", type(error).__name__)
             print("Mensagem:", str(error))
