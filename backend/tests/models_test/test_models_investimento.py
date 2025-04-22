@@ -1,0 +1,36 @@
+from sys import path
+from os import getenv
+from datetime import date
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+PROJECT_ROOT = getenv("PROJECT_ROOT")
+path.insert(0, PROJECT_ROOT)
+
+from app.models.model_investimento import ModelInvestimento
+
+
+class TestModelsInvestimento:
+    def test_model_investimento(self):
+        id_teste = 1
+        nome_teste = "investimento"
+        descricao_teste = "teste"
+        tipo_investimento_teste = "A"
+        valor_teste = 50.0
+        data_teste = date.today()
+        try:
+            modelo_teste = ModelInvestimento(
+                id=id_teste,
+                nome=nome_teste,
+                descricao=descricao_teste,
+                tipo=tipo_investimento_teste,
+                valor=valor_teste,
+                data=data_teste,
+            )
+            assert True
+        except Exception as error:
+            print("Tipo do erro:", type(error).__name__)
+            print("Mensagem:", str(error))
+            assert False
