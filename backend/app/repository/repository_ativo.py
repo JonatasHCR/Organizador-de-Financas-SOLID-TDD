@@ -98,3 +98,20 @@ class RepositoryAtivo(Repository):
 
         finally:
             self.desconectar()
+    
+    def deletar(self, ativo: ModelAtivo):
+        try:
+            self.criar_tabela()
+
+            self.connectar()
+
+            query = """
+            DELETE FROM ativos 
+            WHERE id = %s;
+            """
+            
+            self.cursor.execute(query, (str(ativo.id)))
+            self.conenection.commit()
+
+        finally:
+            self.desconectar()

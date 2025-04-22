@@ -100,3 +100,20 @@ class RepositoryPassivo(Repository):
 
         finally:
             self.desconectar()
+    
+    def deletar(self, passivo: ModelPassivo):
+        try:
+            self.criar_tabela()
+
+            self.connectar()
+
+            query = """
+            DELETE FROM passivos 
+            WHERE id = %s;
+            """
+            
+            self.cursor.execute(query, (str(passivo.id)))
+            self.conenection.commit()
+
+        finally:
+            self.desconectar()

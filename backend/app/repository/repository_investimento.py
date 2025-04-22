@@ -96,3 +96,20 @@ class RepositoryInvestimento(Repository):
 
         finally:
             self.desconectar()
+    
+    def deletar(self, investimento: ModelInvestimento):
+        try:
+            self.criar_tabela()
+
+            self.connectar()
+
+            query = """
+            DELETE FROM investimentos 
+            WHERE id = %s;
+            """
+            
+            self.cursor.execute(query, (str(investimento.id)))
+            self.conenection.commit()
+
+        finally:
+            self.desconectar()
