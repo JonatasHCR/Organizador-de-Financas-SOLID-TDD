@@ -10,6 +10,7 @@ PROJECT_ROOT = getenv("PROJECT_ROOT")
 path.insert(0, PROJECT_ROOT)
 
 from app.models.model_investimento import ModelInvestimento
+import config.config
 
 
 class TestModelsInvestimento:

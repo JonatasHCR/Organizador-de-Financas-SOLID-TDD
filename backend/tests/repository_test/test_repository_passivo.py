@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 from app.repository.repository_passivo import RepositoryPassivo
 from app.models.model_passivo import ModelPassivo
+import config.config
 
 load_dotenv()
 
@@ -18,10 +19,12 @@ class TestRepositoryPassivo:
     def test_criacao_tabela(self):
         try:
             repository = RepositoryPassivo()
+            repository.database = getenv("DATABASE_TESTE")
+            repository.criar_tabela()
 
             conenection = connect(
                 host=getenv("HOST"),
-                database=getenv("DATABASE"),
+                database=getenv("DATABASE_TESTE"),
                 user=getenv("USER"),
                 password=getenv("PASSWORD"),
             )
@@ -51,6 +54,7 @@ class TestRepositoryPassivo:
     def test_inserir_dado_na_tabela(self):
         try:
             repository = RepositoryPassivo()
+            repository.database = getenv("DATABASE_TESTE")
 
             id_teste = 1
             nome_teste = "despesa"
@@ -76,7 +80,7 @@ class TestRepositoryPassivo:
 
             conenection = connect(
                 host=getenv("HOST"),
-                database=getenv("DATABASE"),
+                database=getenv("DATABASE_TESTE"),
                 user=getenv("USER"),
                 password=getenv("PASSWORD"),
             )
@@ -101,6 +105,7 @@ class TestRepositoryPassivo:
     def test_modificar_dado_na_tabela(self):
         try:
             repository = RepositoryPassivo()
+            repository.database = getenv("DATABASE_TESTE")
 
             id_teste = 1
             nome_teste = "despesa_alterada"
@@ -126,7 +131,7 @@ class TestRepositoryPassivo:
 
             conenection = connect(
                 host=getenv("HOST"),
-                database=getenv("DATABASE"),
+                database=getenv("DATABASE_TESTE"),
                 user=getenv("USER"),
                 password=getenv("PASSWORD"),
             )

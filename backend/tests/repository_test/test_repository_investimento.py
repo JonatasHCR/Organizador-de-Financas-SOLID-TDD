@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 from app.repository.repository_investimento import RepositoryInvestimento
 from app.models.model_investimento import ModelInvestimento
+import config.config
 
 load_dotenv()
 
@@ -18,10 +19,12 @@ class TestRepositoryInvestimento:
     def test_criacao_tabela(self):
         try:
             repository = RepositoryInvestimento()
+            repository.database = getenv("DATABASE_TESTE")
+            repository.criar_tabela()
 
             conenection = connect(
                 host=getenv("HOST"),
-                database=getenv("DATABASE"),
+                database=getenv("DATABASE_TESTE"),
                 user=getenv("USER"),
                 password=getenv("PASSWORD"),
             )
@@ -51,6 +54,7 @@ class TestRepositoryInvestimento:
     def test_inserir_dado_na_tabela(self):
         try:
             repository = RepositoryInvestimento()
+            repository.database = getenv("DATABASE_TESTE")
 
             id_teste = 1
             nome_teste = "investimento"
@@ -72,7 +76,7 @@ class TestRepositoryInvestimento:
 
             conenection = connect(
                 host=getenv("HOST"),
-                database=getenv("DATABASE"),
+                database=getenv("DATABASE_TESTE"),
                 user=getenv("USER"),
                 password=getenv("PASSWORD"),
             )
@@ -93,10 +97,11 @@ class TestRepositoryInvestimento:
             assert False
         finally:
             cursor.close()
-    
+
     def test_modificar_dado_na_tabela(self):
         try:
             repository = RepositoryInvestimento()
+            repository.database = getenv("DATABASE_TESTE")
 
             id_teste = 1
             nome_teste = "investimento_alterado"
@@ -114,12 +119,11 @@ class TestRepositoryInvestimento:
                 data=data_teste,
             )
 
-
             repository.modificar(modelo_teste)
 
             conenection = connect(
                 host=getenv("HOST"),
-                database=getenv("DATABASE"),
+                database=getenv("DATABASE_TESTE"),
                 user=getenv("USER"),
                 password=getenv("PASSWORD"),
             )
@@ -141,4 +145,3 @@ class TestRepositoryInvestimento:
             assert False
         finally:
             cursor.close()
-

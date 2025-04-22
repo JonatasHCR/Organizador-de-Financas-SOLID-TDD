@@ -22,7 +22,7 @@ class RepositoryPassivo(Repository):
 
         self.criar_tabela()
 
-    def connectar(self):
+    def connectar(self):   
         self.conenection = psycopg2.connect(
             host=self.host,
             database=self.database,
@@ -60,6 +60,8 @@ class RepositoryPassivo(Repository):
 
     def inserir(self, passivo: ModelPassivo):
         try:
+            self.criar_tabela()
+
             self.connectar()
 
             query = """
@@ -75,6 +77,8 @@ class RepositoryPassivo(Repository):
 
     def modificar(self, passivo: ModelPassivo):
         try:
+            self.criar_tabela()
+
             self.connectar()
 
             query = """

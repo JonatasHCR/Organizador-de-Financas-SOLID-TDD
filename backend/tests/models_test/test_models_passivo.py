@@ -10,6 +10,7 @@ PROJECT_ROOT = getenv("PROJECT_ROOT")
 path.insert(0, PROJECT_ROOT)
 
 from app.models.model_passivo import ModelPassivo
+import config.config
 
 
 class TestModelsPassivo:

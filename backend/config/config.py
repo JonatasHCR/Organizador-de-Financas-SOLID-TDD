@@ -30,6 +30,7 @@ CHAVES = {
     "USER": "Meu_User",
     "PASSWORD": "Minha_Senha",
     "DATABASE": "Meu_Banco",
+    "DATABASE_TESTE": "Banco_Testes",
     "HOST": "Meu_Host",
     "PROJECT_ROOT": PROJECT_ROOT,
 }

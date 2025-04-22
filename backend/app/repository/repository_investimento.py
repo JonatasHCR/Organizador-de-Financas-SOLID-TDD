@@ -58,6 +58,8 @@ class RepositoryInvestimento(Repository):
 
     def inserir(self, investimento: ModelInvestimento):
         try:
+            self.criar_tabela()
+
             self.connectar()
 
             query = """
@@ -73,6 +75,8 @@ class RepositoryInvestimento(Repository):
 
     def modificar(self, investimento: ModelInvestimento):
         try:
+            self.criar_tabela()
+            
             self.connectar()
 
             query = """

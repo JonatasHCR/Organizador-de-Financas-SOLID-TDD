@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 from app.repository.repository_ativo import RepositoryAtivo
 from app.models.model_ativo import ModelAtivo
+import config.config
 
 load_dotenv()
 
@@ -18,10 +19,12 @@ class TestRepositoryAtivo:
     def test_criacao_tabela(self):
         try:
             repository = RepositoryAtivo()
+            repository.database = getenv("DATABASE_TESTE")
+            repository.criar_tabela()
 
             conenection = connect(
                 host=getenv("HOST"),
-                database=getenv("DATABASE"),
+                database=getenv("DATABASE_TESTE"),
                 user=getenv("USER"),
                 password=getenv("PASSWORD"),
             )
@@ -51,6 +54,7 @@ class TestRepositoryAtivo:
     def test_inserir_dado_na_tabela(self):
         try:
             repository = RepositoryAtivo()
+            repository.database = getenv("DATABASE_TESTE")
 
             id_teste = 1
             nome_teste = "ativo"
@@ -74,7 +78,7 @@ class TestRepositoryAtivo:
 
             conenection = connect(
                 host=getenv("HOST"),
-                database=getenv("DATABASE"),
+                database=getenv("DATABASE_TESTE"),
                 user=getenv("USER"),
                 password=getenv("PASSWORD"),
             )
@@ -99,6 +103,7 @@ class TestRepositoryAtivo:
     def test_modificar_dado_na_tabela(self):
         try:
             repository = RepositoryAtivo()
+            repository.database = getenv("DATABASE_TESTE")
 
             id_teste = 1
             nome_teste = "ativo_alterado"
@@ -122,7 +127,7 @@ class TestRepositoryAtivo:
 
             conenection = connect(
                 host=getenv("HOST"),
-                database=getenv("DATABASE"),
+                database=getenv("DATABASE_TESTE"),
                 user=getenv("USER"),
                 password=getenv("PASSWORD"),
             )

@@ -59,6 +59,8 @@ class RepositoryAtivo(Repository):
 
     def inserir(self, ativo: ModelAtivo):
         try:
+            self.criar_tabela()
+
             self.connectar()
 
             query = """
@@ -74,6 +76,8 @@ class RepositoryAtivo(Repository):
 
     def modificar(self, ativo: ModelAtivo):
         try:
+            self.criar_tabela()
+
             self.connectar()
 
             query = """
