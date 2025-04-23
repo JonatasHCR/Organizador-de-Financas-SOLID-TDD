@@ -92,13 +92,13 @@ class RepositoryAtivo(Repository):
             WHERE id = %s;
             """
             valores = ativo.to_list()[1:] + [ativo.id]
-            
+
             self.cursor.execute(query, valores)
             self.conenection.commit()
 
         finally:
             self.desconectar()
-    
+
     def deletar(self, ativo: ModelAtivo):
         try:
             self.criar_tabela()
@@ -109,7 +109,7 @@ class RepositoryAtivo(Repository):
             DELETE FROM ativos 
             WHERE id = %s;
             """
-            
+
             self.cursor.execute(query, (str(ativo.id)))
             self.conenection.commit()
 

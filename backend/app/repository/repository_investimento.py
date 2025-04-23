@@ -76,7 +76,7 @@ class RepositoryInvestimento(Repository):
     def modificar(self, investimento: ModelInvestimento):
         try:
             self.criar_tabela()
-            
+
             self.connectar()
 
             query = """
@@ -90,13 +90,13 @@ class RepositoryInvestimento(Repository):
             WHERE id = %s;
             """
             valores = investimento.to_list()[1:] + [investimento.id]
-            
+
             self.cursor.execute(query, valores)
             self.conenection.commit()
 
         finally:
             self.desconectar()
-    
+
     def deletar(self, investimento: ModelInvestimento):
         try:
             self.criar_tabela()
@@ -107,7 +107,7 @@ class RepositoryInvestimento(Repository):
             DELETE FROM investimentos 
             WHERE id = %s;
             """
-            
+
             self.cursor.execute(query, (str(investimento.id)))
             self.conenection.commit()
 

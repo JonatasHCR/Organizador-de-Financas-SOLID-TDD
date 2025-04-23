@@ -145,7 +145,22 @@ class TestRepositoryInvestimento:
             assert False
         finally:
             cursor.close()
-    
+
+    def test_mostrar_dados_na_tabela(self):
+        try:
+            repository = RepositoryInvestimento()
+            repository.database = getenv("DATABASE_TESTE")
+
+            existe = repository.mostrar()
+
+            assert len(existe) > 0
+            assert isinstance(existe[0], ModelInvestimento)
+
+        except Exception as error:
+            print("Tipo do erro:", type(error).__name__)
+            print("Mensagem:", str(error))
+            assert False
+
     def test_deletar_dado_na_tabela(self):
         try:
             repository = RepositoryInvestimento()

@@ -22,7 +22,7 @@ class RepositoryPassivo(Repository):
 
         self.criar_tabela()
 
-    def connectar(self):   
+    def connectar(self):
         self.conenection = psycopg2.connect(
             host=self.host,
             database=self.database,
@@ -94,13 +94,13 @@ class RepositoryPassivo(Repository):
             WHERE id = %s;
             """
             valores = passivo.to_list()[1:] + [passivo.id]
-            
+
             self.cursor.execute(query, valores)
             self.conenection.commit()
 
         finally:
             self.desconectar()
-    
+
     def deletar(self, passivo: ModelPassivo):
         try:
             self.criar_tabela()
@@ -111,7 +111,7 @@ class RepositoryPassivo(Repository):
             DELETE FROM passivos 
             WHERE id = %s;
             """
-            
+
             self.cursor.execute(query, (str(passivo.id)))
             self.conenection.commit()
 
