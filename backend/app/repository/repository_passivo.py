@@ -77,8 +77,6 @@ class RepositoryPassivo(Repository):
 
     def modificar(self, passivo: ModelPassivo):
         try:
-            self.criar_tabela()
-
             self.connectar()
 
             query = """
@@ -101,10 +99,25 @@ class RepositoryPassivo(Repository):
         finally:
             self.desconectar()
 
+    def mostrar(self) -> list[ModelPassivo]:
+        try:
+            self.connectar()
+
+            query = """SELECT * FROM passivos"""
+
+            self.cursor.execute(query)
+
+            dados = self.cursor.fetchall()
+
+            lista = [ModelPassivo(*dado) for dado in dados]
+
+            return lista
+
+        finally:
+            self.desconectar()
+
     def deletar(self, passivo: ModelPassivo):
         try:
-            self.criar_tabela()
-
             self.connectar()
 
             query = """

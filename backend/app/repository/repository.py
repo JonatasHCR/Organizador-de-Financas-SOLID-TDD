@@ -23,5 +23,9 @@ class Repository(ABC):
         pass
 
     @abstractmethod
+    def mostrar(self):
+        pass
+
+    @abstractmethod
     def deletar(self):
         pass

@@ -76,8 +76,6 @@ class RepositoryAtivo(Repository):
 
     def modificar(self, ativo: ModelAtivo):
         try:
-            self.criar_tabela()
-
             self.connectar()
 
             query = """
@@ -99,10 +97,25 @@ class RepositoryAtivo(Repository):
         finally:
             self.desconectar()
 
+    def mostrar(self) -> list[ModelAtivo]:
+        try:
+            self.connectar()
+
+            query = """SELECT * FROM ativos"""
+
+            self.cursor.execute(query)
+
+            dados = self.cursor.fetchall()
+
+            lista = [ModelAtivo(*dado) for dado in dados]
+
+            return lista
+
+        finally:
+            self.desconectar()
+
     def deletar(self, ativo: ModelAtivo):
         try:
-            self.criar_tabela()
-
             self.connectar()
 
             query = """

@@ -75,8 +75,6 @@ class RepositoryInvestimento(Repository):
 
     def modificar(self, investimento: ModelInvestimento):
         try:
-            self.criar_tabela()
-
             self.connectar()
 
             query = """
@@ -97,10 +95,25 @@ class RepositoryInvestimento(Repository):
         finally:
             self.desconectar()
 
+    def mostrar(self) -> list[ModelInvestimento]:
+        try:
+            self.connectar()
+
+            query = """SELECT * FROM investimentos"""
+
+            self.cursor.execute(query)
+
+            dados = self.cursor.fetchall()
+
+            lista = [ModelInvestimento(*dado) for dado in dados]
+
+            return lista
+
+        finally:
+            self.desconectar()
+
     def deletar(self, investimento: ModelInvestimento):
         try:
-            self.criar_tabela()
-
             self.connectar()
 
             query = """
