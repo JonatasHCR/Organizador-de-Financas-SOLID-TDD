@@ -3,6 +3,7 @@ from os import getenv
 from datetime import date
 
 from dotenv import load_dotenv
+from pytest import mark
 
 load_dotenv()
 
@@ -13,6 +14,7 @@ from app.models.model_investimento import ModelInvestimento
 import config.config
 
 
+@mark.models
 class TestModelsInvestimento:
     def test_model_investimento(self):
         id_teste = 1

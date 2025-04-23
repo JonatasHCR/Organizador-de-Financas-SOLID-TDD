@@ -4,17 +4,19 @@ from sys import path
 
 from psycopg2 import connect
 from dotenv import load_dotenv
-
-from app.repository.repository_ativo import RepositoryAtivo
-from app.models.model_ativo import ModelAtivo
-import config.config
+from pytest import mark
 
 load_dotenv()
 
 PROJECT_ROOT = getenv("PROJECT_ROOT")
 path.insert(0, PROJECT_ROOT)
 
+from app.repository.repository_ativo import RepositoryAtivo
+from app.models.model_ativo import ModelAtivo
+import config.config
 
+
+@mark.repository
 class TestRepositoryAtivo:
     def test_criacao_tabela(self):
         try:
@@ -206,6 +208,10 @@ class TestRepositoryAtivo:
                 assert False
             else:
                 assert True
+
+            query = """DROP TABLE IF EXISTS ativos"""
+            cursor.execute(query)
+            conenection.commit()
 
         except Exception as error:
             print("Tipo do erro:", type(error).__name__)

@@ -4,17 +4,19 @@ from sys import path
 
 from psycopg2 import connect
 from dotenv import load_dotenv
-
-from app.repository.repository_investimento import RepositoryInvestimento
-from app.models.model_investimento import ModelInvestimento
-import config.config
+from pytest import mark
 
 load_dotenv()
 
 PROJECT_ROOT = getenv("PROJECT_ROOT")
 path.insert(0, PROJECT_ROOT)
 
+from app.repository.repository_investimento import RepositoryInvestimento
+from app.models.model_investimento import ModelInvestimento
+import config.config
 
+
+@mark.repository
 class TestRepositoryInvestimento:
     def test_criacao_tabela(self):
         try:
@@ -200,6 +202,10 @@ class TestRepositoryInvestimento:
                 assert False
             else:
                 assert True
+
+            query = """DROP TABLE IF EXISTS investimentos"""
+            cursor.execute(query)
+            conenection.commit()
 
         except Exception as error:
             print("Tipo do erro:", type(error).__name__)
