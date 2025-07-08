@@ -9,7 +9,9 @@ class PassivoSchema(BaseModel):
     nome: str = Field(..., description="Nome do passivo")
     descricao: str
     valor: float = Field(..., ge=0, description="Valor do passivo")
-    referente: str = Field(..., description="A associação do passivo, ex: Saúde, Lazer, Boleto")
+    referente: str = Field(
+        ..., description="A associação do passivo, ex: Saúde, Lazer, Boleto"
+    )
     data: date = Field(..., description="Data que foi adquirido o passivo")
     fixo: Literal["S", "N"]
     vencimento: date

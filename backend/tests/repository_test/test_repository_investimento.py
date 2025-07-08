@@ -11,8 +11,8 @@ load_dotenv()
 PROJECT_ROOT = getenv("PROJECT_ROOT")
 path.insert(0, PROJECT_ROOT)
 
-from app.repository.repository_investimento import RepositoryInvestimento
-from app.models.model_investimento import ModelInvestimento
+from backend.app.repository.investimento import RepositoryInvestimento
+from backend.app.models.investimento import ModelInvestimento
 import config.config
 
 
