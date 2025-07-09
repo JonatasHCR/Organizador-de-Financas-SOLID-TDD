@@ -19,13 +19,5 @@ class PassivoSchema(BaseModel):
     id_conta: int = Field(..., ge=0, description="Conta que está relacionado")
 
 
-class PassivoCreateSchema(PassivoSchema):
-    pass
-
-
 class PassivoOutputSchema(PassivoSchema):
     id: int = Field(..., ge=0)
-
-
-class PassivoUpdateSchema(PassivoSchema):
-    pass

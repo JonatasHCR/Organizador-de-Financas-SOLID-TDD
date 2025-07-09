@@ -2,48 +2,75 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.models.passivo import Passivo
-from app.schemas.passivo import PassivoCreateSchema, PassivoUpdateSchema
+from app.schemas.passivo import PassivoSchema, PassivoOutputSchema
 
 
 class PassivoRepository:
     def __init__(self, db: AsyncSession):
         self.__db = db
 
-    async def get_by_id(self, passivo_id: int) -> Passivo:
+    async def get_by_id(self, passivo_id: int) -> PassivoOutputSchema | None:
         busca = await self.__db.execute(select(Passivo).where(Passivo.id == passivo_id))
-        return busca.scalar_one_or_none()
+        busca = busca.scalar_one_or_none()
 
-    async def create(self, passivo_schema: PassivoCreateSchema) -> Passivo:
+        if busca is None:
+            return None
+
+        return PassivoOutputSchema.model_validate(busca)
+
+    async def _get_by_id(self, passivo_id: int) -> Passivo | None:
+        busca = await self.__db.execute(select(Passivo).where(Passivo.id == passivo_id))
+        busca = busca.scalar_one_or_none()
+
+        if busca is None:
+            return None
+
+        return busca
+
+    async def get_by_conta(self, conta_id: int) -> list[PassivoOutputSchema]:
+        busca = await self.__db.execute(
+            select(Passivo).where(Passivo.id_conta == conta_id)
+        )
+        busca = busca.scalars().all()
+
+        if busca is None:
+            return None
+
+        return [PassivoOutputSchema.model_validate(passivo) for passivo in busca]
+
+    async def get_all(self):
+        busca = await self.__db.execute(select(Passivo))
+        busca = busca.scalars().all()
+
+        if busca is None:
+            return None
+
+        return [PassivoOutputSchema.model_validate(passivo) for passivo in busca]
+
+    async def create(self, passivo_schema: PassivoSchema) -> bool:
         passivo = Passivo(passivo_schema.model_dump())
         self.__db.add(passivo)
         await self.__db.commit()
-        await self.__db.refresh(passivo)
-        return passivo
+        return True
 
-    async def update(
-        self, passivo_id: int, passivo_schema: PassivoUpdateSchema
-    ) -> Passivo:
-        passivo = await self.__db.execute(
-            select(Passivo).where(Passivo.id == passivo_id)
-        )
-        passivo = passivo.scalar_one_or_none()
+    async def update(self, passivo_id: int, passivo_schema: PassivoSchema) -> bool:
+        passivo = await self._get_by_id(passivo_id)
 
         if passivo is None:
-            return None
+            return False
 
         passivo_update = passivo_schema.model_dump(exclude_unset=True)
         for key, value in passivo_update.items():
             setattr(passivo, key, value)
 
         await self.__db.commit()
-        await self.__db.refresh(passivo)
-        return passivo
+        return True
 
     async def delete(self, passivo_id: int) -> bool:
-        passivo = await self.__db.execute(
-            select(Passivo).where(Passivo.id == passivo_id)
-        )
-        passivo = passivo.scalar_one_or_none()
+        passivo = await self._get_by_id(passivo_id)
+
+        if passivo is None:
+            return False
 
         await self.__db.delete(passivo)
         await self.__db.commit()

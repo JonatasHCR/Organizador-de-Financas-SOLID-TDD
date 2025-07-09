@@ -7,5 +7,5 @@ class Conta(Base):
     __comment__ = "Tabela de contas do sistema"
 
     id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String, nullable=False)
+    nome = Column(String, nullable=False, unique=True)
     descricao = Column(Text, nullable=True)

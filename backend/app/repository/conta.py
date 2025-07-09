@@ -2,42 +2,73 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.models.conta import Conta
-from app.schemas.conta import ContaCreateSchema, ContaUpdateSchema
+from app.schemas.conta import ContaSchema, ContaOutputSchema
 
 
 class ContaRepository:
     def __init__(self, db: AsyncSession):
         self.__db = db
 
-    async def get_by_id(self, conta_id: int) -> Conta:
+    async def get_by_id(self, conta_id: int) -> ContaOutputSchema | None:
         busca = await self.__db.execute(select(Conta).where(Conta.id == conta_id))
-        return busca.scalar_one_or_none()
+        busca = busca.scalar_one_or_none()
 
-    async def create(self, conta_schema: ContaCreateSchema) -> Conta:
-        conta = Conta(conta_schema.model_dump())
+        if busca is None:
+            return None
+
+        return ContaOutputSchema.model_validate(busca)
+
+    async def _get_by_id(self, conta_id: int) -> Conta | None:
+        busca = await self.__db.execute(select(Conta).where(Conta.id == conta_id))
+        busca = busca.scalar_one_or_none()
+
+        if busca is None:
+            return None
+
+        return busca
+
+    async def get_by_nome(self, nome: int) -> ContaOutputSchema:
+        busca = await self.__db.execute(select(Conta).where(Conta.nome == nome))
+        busca = busca.scalar_one_or_none()
+
+        if busca is None:
+            return None
+
+        return ContaOutputSchema.model_validate(busca)
+
+    async def get_all(self):
+        busca = await self.__db.execute(select(Conta))
+        busca = busca.scalars().all()
+
+        if busca is None:
+            return None
+
+        return [ContaOutputSchema.model_validate(conta) for conta in busca]
+
+    async def create(self, conta_schema: ContaSchema) -> bool:
+        conta = conta(conta_schema.model_dump())
         self.__db.add(conta)
         await self.__db.commit()
-        await self.__db.refresh(conta)
-        return conta
+        return True
 
-    async def update(self, conta_id: int, conta_schema: ContaUpdateSchema) -> Conta:
-        conta = await self.__db.execute(select(Conta).where(Conta.id == conta_id))
-        conta = conta.scalar_one_or_none()
+    async def update(self, conta_id: int, conta_schema: ContaSchema) -> bool:
+        conta = await self._get_by_id(conta_id)
 
         if conta is None:
-            return None
+            return False
 
         conta_update = conta_schema.model_dump(exclude_unset=True)
         for key, value in conta_update.items():
             setattr(conta, key, value)
 
         await self.__db.commit()
-        await self.__db.refresh(conta)
-        return conta
+        return True
 
     async def delete(self, conta_id: int) -> bool:
-        conta = await self.__db.execute(select(Conta).where(Conta.id == conta_id))
-        conta = conta.scalar_one_or_none()
+        conta = await self._get_by_id(conta_id)
+
+        if conta is None:
+            return False
 
         await self.__db.delete(conta)
         await self.__db.commit()

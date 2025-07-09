@@ -19,13 +19,5 @@ class AtivoSchema(BaseModel):
     id_conta: int = Field(..., ge=0, description="Conta que está relacionado")
 
 
-class AtivoCreateSchema(AtivoSchema):
-    pass
-
-
 class AtivoOutputSchema(AtivoSchema):
     id: int = Field(..., ge=0)
-
-
-class AtivoUpdateSchema(AtivoSchema):
-    pass

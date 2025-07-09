@@ -15,13 +15,5 @@ class InvestimentoSchema(BaseModel):
     id_conta: int = Field(..., ge=0, description="Conta que está relacionado")
 
 
-class InvestimentoCreateSchema(InvestimentoSchema):
-    pass
-
-
 class InvestimentoOutputSchema(InvestimentoSchema):
     id: int = Field(..., ge=0)
-
-
-class InvestimentoUpdateSchema(InvestimentoSchema):
-    pass

@@ -7,13 +7,5 @@ class ContaSchema(BaseModel):
     descricao: str
 
 
-class ContaCreateSchema(ContaSchema):
-    pass
-
-
 class ContaOutputSchema(ContaSchema):
     id: int = Field(..., ge=0)
-
-
-class ContaUpdateSchema(ContaSchema):
-    pass
