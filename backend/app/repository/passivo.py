@@ -1,8 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.models.passivo import Passivo
-from app.schemas.passivo import PassivoSchema, PassivoOutputSchema
+from app.model.passivo import Passivo
+from app.schema.passivo import PassivoSchema, PassivoOutputSchema
 
 
 class PassivoRepository:
@@ -38,7 +38,7 @@ class PassivoRepository:
 
         return [PassivoOutputSchema.model_validate(passivo) for passivo in busca]
 
-    async def get_all(self):
+    async def get_all(self) -> list[PassivoOutputSchema]:
         busca = await self.__db.execute(select(Passivo))
         busca = busca.scalars().all()
 

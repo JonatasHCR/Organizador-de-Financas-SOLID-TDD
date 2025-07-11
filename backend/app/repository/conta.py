@@ -1,8 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.models.conta import Conta
-from app.schemas.conta import ContaSchema, ContaOutputSchema
+from app.model.conta import Conta
+from app.schema.conta import ContaSchema, ContaOutputSchema
 
 
 class ContaRepository:
@@ -27,7 +27,7 @@ class ContaRepository:
 
         return busca
 
-    async def get_by_nome(self, nome: int) -> ContaOutputSchema:
+    async def get_by_nome(self, nome: str) -> ContaOutputSchema:
         busca = await self.__db.execute(select(Conta).where(Conta.nome == nome))
         busca = busca.scalar_one_or_none()
 
@@ -36,7 +36,7 @@ class ContaRepository:
 
         return ContaOutputSchema.model_validate(busca)
 
-    async def get_all(self):
+    async def get_all(self) -> list[ContaOutputSchema]:
         busca = await self.__db.execute(select(Conta))
         busca = busca.scalars().all()
 

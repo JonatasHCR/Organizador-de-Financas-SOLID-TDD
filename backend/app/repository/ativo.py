@@ -1,8 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.models.ativo import Ativo
-from app.schemas.ativo import AtivoSchema, AtivoOutputSchema
+from app.model.ativo import Ativo
+from app.schema.ativo import AtivoSchema, AtivoOutputSchema
 
 
 class AtivoRepository:
@@ -36,7 +36,7 @@ class AtivoRepository:
 
         return [AtivoOutputSchema.model_validate(ativo) for ativo in busca]
 
-    async def get_all(self):
+    async def get_all(self) -> list[AtivoOutputSchema]:
         busca = await self.__db.execute(select(Ativo))
         busca = busca.scalars().all()
 

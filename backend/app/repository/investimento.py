@@ -1,8 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.models.investimento import Investimento
-from app.schemas.investimento import InvestimentoSchema, InvestimentoOutputSchema
+from app.model.investimento import Investimento
+from app.schema.investimento import InvestimentoSchema, InvestimentoOutputSchema
 
 
 class InvestimentoRepository:
@@ -45,7 +45,7 @@ class InvestimentoRepository:
             for investimento in busca
         ]
 
-    async def get_all(self):
+    async def get_all(self) -> list[InvestimentoOutputSchema]:
         busca = await self.__db.execute(select(Investimento))
         busca = busca.scalars().all()
 

@@ -11,7 +11,7 @@ load_dotenv()
 PROJECT_ROOT = getenv("PROJECT_ROOT")
 path.insert(0, PROJECT_ROOT)
 
-from backend.app.models.ativo import ModelAtivo
+from backend.app.model.ativo import ModelAtivo
 import config.config
 
 @mark.service

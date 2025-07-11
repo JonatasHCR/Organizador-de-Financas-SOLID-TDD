@@ -10,7 +10,7 @@ load_dotenv()
 PROJECT_ROOT = getenv("PROJECT_ROOT")
 path.insert(0, PROJECT_ROOT)
 
-from backend.app.models.passivo import ModelPassivo
+from backend.app.model.passivo import ModelPassivo
 import config.config
 
 
