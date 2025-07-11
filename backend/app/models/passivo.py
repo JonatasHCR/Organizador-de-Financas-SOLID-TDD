@@ -8,10 +8,10 @@ from sqlalchemy import (
     CheckConstraint,
     ForeignKey,
 )
-from app.core.database import Base
+from app.core.database import Database
 
 
-class Passivo(Base):
+class Passivo(Database.Base):
     __tablename__ = "tb_passivos"
     __comment__ = "Tabela de passivos do sistema"
 
@@ -19,7 +19,9 @@ class Passivo(Base):
     nome = Column(String, nullable=False)
     descricao = Column(Text, nullable=True)
     valor = Column(Numeric, nullable=False)
-    referente = Column(String, nullable=False, comment="ex: Se ele é boleto, saúde, empréstimo")
+    referente = Column(
+        String, nullable=False, comment="ex: Se ele é boleto, saúde, empréstimo"
+    )
     data = Column(Date, nullable=False, comment="Data que teve o passivo")
     fixo = Column(
         String(1),

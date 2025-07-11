@@ -8,10 +8,10 @@ from sqlalchemy import (
     CheckConstraint,
     ForeignKey,
 )
-from app.core.database import Base
+from app.core.database import Database
 
 
-class Ativo(Base):
+class Ativo(Database.Base):
     __tablename__ = "tb_ativos"
     __comment__ = "Tabela de ativos do sistema"
 
@@ -19,7 +19,9 @@ class Ativo(Base):
     nome = Column(String, nullable=False)
     descricao = Column(Text, nullable=True)
     valor = Column(Numeric, nullable=False)
-    referente = Column(String, nullable=False, comment="ex: Se ele é salario, freelancer, empréstimo")
+    referente = Column(
+        String, nullable=False, comment="ex: Se ele é salario, freelancer, empréstimo"
+    )
     data = Column(Date, nullable=False, comment="Data em que foi adquirido o ativo")
     fixo = Column(
         String(1),

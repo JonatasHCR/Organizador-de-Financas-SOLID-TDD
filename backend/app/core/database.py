@@ -6,6 +6,11 @@ from app.core.settings import SettingsProducao
 DATABASE_URL = SettingsProducao().DATABASE_URL
 
 
-engine = create_async_engine(DATABASE_URL, echo=True)
-SessionLocal = sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
-Base = declarative_base()
+class Database:
+    Base = declarative_base()
+
+    def __init__(self, database_url: str = DATABASE_URL):
+        self.engine = create_async_engine(database_url, echo=True)
+        self.SessionLocal = sessionmaker(
+            bind=self.engine, class_=AsyncSession, expire_on_commit=False
+        )

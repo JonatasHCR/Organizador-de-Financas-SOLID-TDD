@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String, Text
-from app.core.database import Base
+from app.core.database import Database
 
 
-class Conta(Base):
+class Conta(Database.Base):
     __tablename__ = "tb_contas"
     __comment__ = "Tabela de contas do sistema"
 

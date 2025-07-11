@@ -8,10 +8,10 @@ from sqlalchemy import (
     CheckConstraint,
     ForeignKey,
 )
-from app.core.database import Base
+from app.core.database import Database
 
 
-class Investimento(Base):
+class Investimento(Database.Base):
     __tablename__ = "tb_investimentos"
     __comment__ = "Tabela de investimentos do sistema"
 
