@@ -1,7 +1,8 @@
-from datetime import date
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class AtivoSchema(BaseModel):
@@ -18,6 +19,18 @@ class AtivoSchema(BaseModel):
     finalizado: date
     id_conta: int = Field(..., ge=0, description="Conta que está relacionado")
 
+    model_config = ConfigDict(from_attributes=True)
+
 
 class AtivoOutputSchema(AtivoSchema):
     id: int = Field(..., ge=0)
+
+
+class AtivoResponseSchema(BaseModel):
+    status: str = Field(..., description="Status da resposta")
+    ativo: AtivoOutputSchema = Field(..., description="Ativo")
+    data: datetime = Field(
+        datetime.now(ZoneInfo("America/Bahia")), description="Data e hora da resposta"
+    )
+
+    model_config = ConfigDict(from_attributes=True)

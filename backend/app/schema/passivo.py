@@ -1,7 +1,8 @@
-from datetime import date
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class PassivoSchema(BaseModel):
@@ -18,6 +19,18 @@ class PassivoSchema(BaseModel):
     plano: Optional[Literal["D", "M", "S"]]
     id_conta: int = Field(..., ge=0, description="Conta que está relacionado")
 
+    model_config = ConfigDict(from_attributes=True)
+
 
 class PassivoOutputSchema(PassivoSchema):
     id: int = Field(..., ge=0)
+
+
+class PassivoResponseSchema(BaseModel):
+    status: str = Field(..., description="Status da resposta")
+    ativo: PassivoOutputSchema = Field(..., description="Passivo")
+    data: datetime = Field(
+        datetime.now(ZoneInfo("America/Bahia")), description="Data e hora da resposta"
+    )
+
+    model_config = ConfigDict(from_attributes=True)
