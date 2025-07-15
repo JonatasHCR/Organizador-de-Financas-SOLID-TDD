@@ -2,36 +2,40 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.model.investimento import Investimento
-from app.schema.investimento import InvestimentoSchema, InvestimentoOutputSchema
+from app.schema.investimento import (
+    InvestimentoSchema,
+    InvestimentoOutputSchema,
+    InvestimentoResponseSchema,
+)
 
 
 class InvestimentoRepository:
     def __init__(self, db: AsyncSession):
         self.__db = db
 
-    async def get_by_id(self, investimento_id: int) -> InvestimentoOutputSchema | None:
+    async def get_by_id(self, investimento_id: int) -> InvestimentoOutputSchema:
         busca = await self.__db.execute(
             select(Investimento).where(Investimento.id == investimento_id)
         )
         busca = busca.scalar_one_or_none()
 
         if busca is None:
-            return None
+            return ValueError(f"Investimento com ID = {investimento_id} não encontrado")
 
         return InvestimentoOutputSchema.model_validate(busca)
 
-    async def _get_by_id(self, investimento_id: int) -> Investimento | None:
+    async def _get_by_id(self, investimento_id: int) -> Investimento:
         busca = await self.__db.execute(
             select(Investimento).where(Investimento.id == investimento_id)
         )
         busca = busca.scalar_one_or_none()
 
         if busca is None:
-            return None
+            raise ValueError(f"Investimento com ID = {investimento_id} não encontrado")
 
         return busca
 
-    async def get_by_conta(self, conta_id: int) -> list[InvestimentoOutputSchema]:
+    async def get_by_conta(self, conta_id: int) -> list[InvestimentoOutputSchema] | None:
         busca = await self.__db.execute(
             select(Investimento).where(Investimento.id_conta == conta_id)
         )
@@ -45,7 +49,7 @@ class InvestimentoRepository:
             for investimento in busca
         ]
 
-    async def get_all(self) -> list[InvestimentoOutputSchema]:
+    async def get_all(self) -> list[InvestimentoOutputSchema] | None:
         busca = await self.__db.execute(select(Investimento))
         busca = busca.scalars().all()
 
@@ -57,33 +61,43 @@ class InvestimentoRepository:
             for investimento in busca
         ]
 
-    async def create(self, investimento_schema: InvestimentoSchema) -> bool:
+    async def create(
+        self, investimento_schema: InvestimentoSchema
+    ) -> InvestimentoResponseSchema:
         investimento = Investimento(investimento_schema.model_dump())
         self.__db.add(investimento)
         await self.__db.commit()
-        return True
+        await self.__db.refresh(investimento)
+
+        return InvestimentoResponseSchema(
+            status="Create",
+            investimento=InvestimentoOutputSchema.model_validate(investimento),
+        )
 
     async def update(
         self, investimento_id: int, investimento_schema: InvestimentoSchema
-    ) -> bool:
+    ) -> InvestimentoResponseSchema:
         investimento = await self._get_by_id(investimento_id)
-
-        if investimento is None:
-            return False
 
         investimento_update = investimento_schema.model_dump(exclude_unset=True)
         for key, value in investimento_update.items():
             setattr(investimento, key, value)
 
         await self.__db.commit()
-        return True
+        await self.__db.refresh(investimento)
 
-    async def delete(self, investimento_id: int) -> bool:
+        return InvestimentoResponseSchema(
+            status="Update",
+            investimento=InvestimentoOutputSchema.model_validate(investimento),
+        )
+
+    async def delete(self, investimento_id: int) -> InvestimentoResponseSchema:
         investimento = await self._get_by_id(investimento_id)
-
-        if investimento is None:
-            return False
 
         await self.__db.delete(investimento)
         await self.__db.commit()
-        return True
+
+        return InvestimentoResponseSchema(
+            status="Delete",
+            investimento=InvestimentoOutputSchema.model_validate(investimento),
+        )
