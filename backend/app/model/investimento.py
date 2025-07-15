@@ -6,12 +6,12 @@ from sqlalchemy import (
     Text,
     Date,
     CheckConstraint,
-    ForeignKey,
+    ForeignKeyConstraint,
 )
-from app.core.database import Database
+from app.core.database import Base
 
 
-class Investimento(Database.Base):
+class Investimento(Base):
     __tablename__ = "tb_investimentos"
     __comment__ = "Tabela de investimentos do sistema"
 
@@ -29,14 +29,14 @@ class Investimento(Database.Base):
 
     __table_args__ = (
         CheckConstraint(
-            "tipo IN ('A', 'FII', 'C', 'ETF', 'ETFI', 'AI', 'TD', 'RF'",
+            "tipo IN ('A', 'FII', 'C', 'ETF', 'ETFI', 'AI', 'TD', 'RF')",
             "ck_investimentos_tipo",
         ),
-        ForeignKey(
-            "id_conta",
-            "tb_contas.id",
+        ForeignKeyConstraint(
+            ["id_conta"],
+            ["tb_contas.id"],
             name="fk_investimento_conta_id",
-            ondelete=True,
-            onupdate=True,
+            ondelete="CASCADE",
+            onupdate="CASCADE"
         ),
     )

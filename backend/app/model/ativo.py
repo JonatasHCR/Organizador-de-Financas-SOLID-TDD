@@ -6,12 +6,12 @@ from sqlalchemy import (
     Text,
     Date,
     CheckConstraint,
-    ForeignKey,
+    ForeignKeyConstraint,
 )
-from app.core.database import Database
+from app.core.database import Base
 
 
-class Ativo(Database.Base):
+class Ativo(Base):
     __tablename__ = "tb_ativos"
     __comment__ = "Tabela de ativos do sistema"
 
@@ -43,11 +43,11 @@ class Ativo(Database.Base):
         CheckConstraint(
             "tipo_remuneracao IN ('Q', 'M', 'S')", "ck_ativos_tipo_remuneracao_QSM"
         ),
-        ForeignKey(
-            "id_conta",
-            "tb_contas.id",
+        ForeignKeyConstraint(
+            ["id_conta"],
+            ["tb_contas.id"],
             name="fk_ativo_conta_id",
-            ondelete=True,
-            onupdate=True,
+            ondelete="CASCADE",
+            onupdate="CASCADE"
         ),
     )

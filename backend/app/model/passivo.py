@@ -6,12 +6,12 @@ from sqlalchemy import (
     Text,
     Date,
     CheckConstraint,
-    ForeignKey,
+    ForeignKeyConstraint,
 )
-from app.core.database import Database
+from app.core.database import Base
 
 
-class Passivo(Database.Base):
+class Passivo(Base):
     __tablename__ = "tb_passivos"
     __comment__ = "Tabela de passivos do sistema"
 
@@ -41,11 +41,11 @@ class Passivo(Database.Base):
     __table_args__ = (
         CheckConstraint("fixo IN ('S', 'N')", "ck_passivos_fixo_SN"),
         CheckConstraint("plano IN ('D', 'M', 'S')", "ck_passivos_plano_DMS"),
-        ForeignKey(
-            "id_conta",
-            "tb_contas.id",
+        ForeignKeyConstraint(
+            ["id_conta"],
+            ["tb_contas.id"],
             name="fk_passivo_conta_id",
-            ondelete=True,
-            onupdate=True,
+            ondelete="CASCADE",
+            onupdate="CASCADE"
         ),
     )
