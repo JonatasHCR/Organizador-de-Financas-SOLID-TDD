@@ -16,5 +16,34 @@ async def create_passivo(
     service = PassivoService(db)
     try:
         return await service.create(passivo_schema)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_passivo.put("/update/{passivo_id}", response_model=PassivoResponseSchema)
+async def update_passivo(
+    passivo_id: int, passivo_schema: PassivoSchema, db: AsyncSession = Depends(get_db)
+):
+    service = PassivoService(db)
+    try:
+        return await service.update(passivo_id, passivo_schema)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_passivo.delete("/delete/{passivo_id}", response_model=PassivoResponseSchema)
+async def delete_passivo(passivo_id: int, db: AsyncSession = Depends(get_db)):
+    service = PassivoService(db)
+    try:
+        return await service.delete(passivo_id)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_passivo.get("/{passivo_id}", response_model=PassivoOutputSchema)
+async def get_passivo_by_id(passivo_id: int, db: AsyncSession = Depends(get_db)):
+    service = PassivoService(db)
+    try:
+        return await service.get_by_id(passivo_id)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))

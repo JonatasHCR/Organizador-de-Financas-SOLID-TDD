@@ -17,13 +17,17 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    lifespan=lifespan,
+    title="Projeto Financeiro API",
+    docs_url="/documentation",
+    redoc_url="/recaudacao",
+    openapi_url="/api/openapi.json",
     openapi_tags=[
         {"name": "Ativo", "description": "Operações com Ativos"},
         {"name": "Passivo", "description": "Operações com Passivos"},
         {"name": "Investimento", "description": "Operações com Investimentos"},
-        {"name": "conta", "description": "Operações com Contas"},
+        {"name": "Conta", "description": "Operações com Contas"},
     ],
+    lifespan=lifespan,
 )
 
 app.include_router(router_conta)

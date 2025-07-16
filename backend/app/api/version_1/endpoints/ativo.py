@@ -16,3 +16,32 @@ async def create_ativo(ativo_schema: AtivoSchema, db: AsyncSession = Depends(get
         return await service.create(ativo_schema)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+@router_ativo.put("/update/{ativo_id}", response_model=AtivoResponseSchema)
+async def update_ativo(
+    ativo_id: int, ativo_schema: AtivoSchema, db: AsyncSession = Depends(get_db)
+):
+    service = AtivoService(db)
+    try:
+        return await service.update(ativo_id, ativo_schema)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_ativo.delete("/delete/{ativo_id}", response_model=AtivoResponseSchema)
+async def delete_ativo(ativo_id: int, db: AsyncSession = Depends(get_db)):
+    service = AtivoService(db)
+    try:
+        return await service.delete(ativo_id)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_ativo.get("/{ativo_id}", response_model=AtivoOutputSchema)
+async def get_ativo_by_id(ativo_id: int, db: AsyncSession = Depends(get_db)):
+    service = AtivoService(db)
+    try:
+        return await service.get_by_id(ativo_id)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
