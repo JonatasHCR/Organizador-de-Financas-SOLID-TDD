@@ -13,7 +13,7 @@ class ContaSchema(BaseModel):
 
 
 class ContaOutputSchema(ContaSchema):
-    id: int = Field(..., ge=0)
+    id: int = Field(..., gt=0)
 
 
 class ContaResponseSchema(BaseModel):

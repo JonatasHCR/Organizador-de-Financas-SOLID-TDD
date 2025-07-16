@@ -13,13 +13,13 @@ class InvestimentoSchema(BaseModel):
     data: date = Field(..., description="Data que foi adquirido o investimento")
     fixo: Literal["S", "N"]
     tipo_remuneracao: Optional[Literal["Q", "M", "S"]]
-    id_conta: int = Field(..., ge=0, description="Conta que está relacionado")
+    id_conta: int = Field(..., gt=0, description="Conta que está relacionado")
 
     model_config = ConfigDict(from_attributes=True)
 
 
 class InvestimentoOutputSchema(InvestimentoSchema):
-    id: int = Field(..., ge=0)
+    id: int = Field(..., gt=0)
 
 
 class InvestimentoResponseSchema(BaseModel):

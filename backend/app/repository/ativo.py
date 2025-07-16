@@ -46,9 +46,9 @@ class AtivoRepository:
         return [AtivoOutputSchema.model_validate(ativo) for ativo in busca]
 
     async def create(self, ativo_schema: AtivoSchema) -> AtivoResponseSchema:
-        ativo = Ativo(ativo_schema.model_dump())
+        ativo = Ativo(**ativo_schema.model_dump())
         self.__db.add(ativo)
-        await self.__db.commit()
+        await self.__db.flush()
         await self.__db.refresh(ativo)
 
         return AtivoResponseSchema(
@@ -64,7 +64,7 @@ class AtivoRepository:
         for key, value in ativo_update.items():
             setattr(ativo, key, value)
 
-        await self.__db.commit()
+        await self.__db.flush()
         await self.__db.refresh(ativo)
 
         return AtivoResponseSchema(
@@ -75,7 +75,7 @@ class AtivoRepository:
         ativo = await self._get_by_id(ativo_id)
 
         await self.__db.delete(ativo)
-        await self.__db.commit()
+        await self.__db.flush()
 
         return AtivoResponseSchema(
             status="Delete", ativo=AtivoOutputSchema.model_validate(ativo)

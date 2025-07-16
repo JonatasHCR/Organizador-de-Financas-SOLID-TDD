@@ -35,7 +35,9 @@ class InvestimentoRepository:
 
         return busca
 
-    async def get_by_conta(self, conta_id: int) -> list[InvestimentoOutputSchema] | None:
+    async def get_by_conta(
+        self, conta_id: int
+    ) -> list[InvestimentoOutputSchema] | None:
         busca = await self.__db.execute(
             select(Investimento).where(Investimento.id_conta == conta_id)
         )
@@ -64,9 +66,9 @@ class InvestimentoRepository:
     async def create(
         self, investimento_schema: InvestimentoSchema
     ) -> InvestimentoResponseSchema:
-        investimento = Investimento(investimento_schema.model_dump())
+        investimento = Investimento(**investimento_schema.model_dump())
         self.__db.add(investimento)
-        await self.__db.commit()
+        await self.__db.flush()
         await self.__db.refresh(investimento)
 
         return InvestimentoResponseSchema(
@@ -83,7 +85,7 @@ class InvestimentoRepository:
         for key, value in investimento_update.items():
             setattr(investimento, key, value)
 
-        await self.__db.commit()
+        await self.__db.flush()
         await self.__db.refresh(investimento)
 
         return InvestimentoResponseSchema(
@@ -95,7 +97,7 @@ class InvestimentoRepository:
         investimento = await self._get_by_id(investimento_id)
 
         await self.__db.delete(investimento)
-        await self.__db.commit()
+        await self.__db.flush()
 
         return InvestimentoResponseSchema(
             status="Delete",

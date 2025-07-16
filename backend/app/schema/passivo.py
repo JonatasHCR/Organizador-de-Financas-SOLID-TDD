@@ -17,13 +17,13 @@ class PassivoSchema(BaseModel):
     fixo: Literal["S", "N"]
     vencimento: date
     plano: Optional[Literal["D", "M", "S"]]
-    id_conta: int = Field(..., ge=0, description="Conta que está relacionado")
+    id_conta: int = Field(..., gt=0, description="Conta que está relacionado")
 
     model_config = ConfigDict(from_attributes=True)
 
 
 class PassivoOutputSchema(PassivoSchema):
-    id: int = Field(..., ge=0)
+    id: int = Field(..., gt=0)
 
 
 class PassivoResponseSchema(BaseModel):

@@ -46,10 +46,10 @@ class ContaRepository:
         return [ContaOutputSchema.model_validate(conta) for conta in busca]
 
     async def create(self, conta_schema: ContaSchema) -> ContaResponseSchema:
-        conta = Conta(conta_schema.model_dump())
-        
+        conta = Conta(**conta_schema.model_dump())
+
         self.__db.add(conta)
-        await self.__db.commit()
+        await self.__db.flush()
         await self.__db.refresh(conta)
 
         return ContaResponseSchema(
@@ -65,7 +65,7 @@ class ContaRepository:
         for key, value in conta_update.items():
             setattr(conta, key, value)
 
-        await self.__db.commit()
+        await self.__db.flush()
         await self.__db.refresh(conta)
 
         return ContaResponseSchema(
@@ -76,8 +76,8 @@ class ContaRepository:
         conta = await self._get_by_id(conta_id)
 
         await self.__db.delete(conta)
-        await self.__db.commit()
-        
+        await self.__db.flush()
+
         return ContaResponseSchema(
             status="Delete", conta=ContaOutputSchema.model_validate(conta)
         )

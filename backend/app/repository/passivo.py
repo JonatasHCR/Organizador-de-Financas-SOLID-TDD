@@ -48,9 +48,9 @@ class PassivoRepository:
         return [PassivoOutputSchema.model_validate(passivo) for passivo in busca]
 
     async def create(self, passivo_schema: PassivoSchema) -> PassivoResponseSchema:
-        passivo = Passivo(passivo_schema.model_dump())
+        passivo = Passivo(**passivo_schema.model_dump())
         self.__db.add(passivo)
-        await self.__db.commit()
+        await self.__db.flush()
         await self.__db.refresh(passivo)
 
         return PassivoResponseSchema(
@@ -66,7 +66,7 @@ class PassivoRepository:
         for key, value in passivo_update.items():
             setattr(passivo, key, value)
 
-        await self.__db.commit()
+        await self.__db.flush()
         await self.__db.refresh(passivo)
 
         return PassivoResponseSchema(
@@ -77,7 +77,7 @@ class PassivoRepository:
         passivo = await self._get_by_id(passivo_id)
 
         await self.__db.delete(passivo)
-        await self.__db.commit()
+        await self.__db.flush()
 
         return PassivoResponseSchema(
             status="Delete", passivo=PassivoOutputSchema.model_validate(passivo)
