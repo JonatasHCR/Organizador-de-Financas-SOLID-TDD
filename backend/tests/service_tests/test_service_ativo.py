@@ -6,7 +6,7 @@ from app.service.ativo import AtivoService
 
 ativo_teste = {
     "nome": "Ativo Teste",
-    "descricao": "Descrição Teste",
+    "descricao": None,
     "valor": 100,
     "referente": "Emprestado",
     "data": "2025-07-12",
@@ -49,9 +49,11 @@ async def test_service_update(async_db):
     ativo_id = ativo.ativo.id
 
     ativo_teste["nome"] = "Nome Alterado"
+    ativo_teste["descricao"] = "Nova Descrição"
 
     ativo_alterado = await service.update(ativo_id, AtivoSchema(**ativo_teste))
     assert ativo_alterado.ativo.nome == ativo_teste["nome"]
+    assert ativo_alterado.ativo.descricao == ativo_teste["descricao"]
 
 
 @pytest.mark.asyncio
