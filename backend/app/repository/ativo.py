@@ -30,7 +30,7 @@ class AtivoRepository:
 
         return busca
 
-    async def get_by_conta(self, conta_id: int) -> list[AtivoOutputSchema]:
+    async def get_by_conta_id(self, conta_id: int) -> list[AtivoOutputSchema]:
         busca = await self.__db.execute(select(Ativo).where(Ativo.conta_id == conta_id))
         busca = busca.scalars().all()
 

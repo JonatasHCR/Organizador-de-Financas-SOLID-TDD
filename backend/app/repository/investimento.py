@@ -38,7 +38,7 @@ class InvestimentoRepository:
 
         return busca
 
-    async def get_by_conta(
+    async def get_by_conta_id(
         self, conta_id: int
     ) -> list[InvestimentoOutputSchema] | None:
         busca = await self.__db.execute(

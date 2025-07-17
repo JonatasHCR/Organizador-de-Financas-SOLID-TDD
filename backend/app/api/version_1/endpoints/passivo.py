@@ -68,6 +68,6 @@ async def get_passivo_by_conta_id(
 ) -> list[PassivoOutputSchema]:
     service = PassivoService(db)
     try:
-        return await service.get_by_conta(conta_id)
+        return await service.get_by_conta_id(conta_id)
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))

@@ -13,8 +13,8 @@ class AtivoService:
 
         return busca
 
-    async def get_by_conta(self, conta_id: int) -> list[AtivoOutputSchema]:
-        busca = await self.repository.get_by_conta(conta_id)
+    async def get_by_conta_id(self, conta_id: int) -> list[AtivoOutputSchema]:
+        busca = await self.repository.get_by_conta_id(conta_id)
 
         return busca
 
@@ -25,9 +25,6 @@ class AtivoService:
 
     async def get_all(self) -> list[AtivoOutputSchema]:
         busca = await self.repository.get_all()
-
-        if busca is None:
-            return None
 
         return busca
 

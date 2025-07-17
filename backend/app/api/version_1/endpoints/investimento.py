@@ -82,6 +82,6 @@ async def get_investimento_by_conta_id(
 ) -> list[InvestimentoOutputSchema]:
     service = InvestimentoService(db)
     try:
-        return await service.get_by_conta(conta_id)
+        return await service.get_by_conta_id(conta_id)
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))

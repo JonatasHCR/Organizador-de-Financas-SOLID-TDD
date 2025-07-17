@@ -38,7 +38,7 @@ async def test_service_get_by_conta(async_db):
     service = AtivoService(async_db)
     await service.create(AtivoSchema(**ativo_teste))
 
-    ativo = await service.get_by_conta(ativo_teste["conta_id"])
+    ativo = await service.get_by_conta_id(ativo_teste["conta_id"])
     assert len(ativo) > 0
 
 

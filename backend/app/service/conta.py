@@ -21,9 +21,6 @@ class ContaService:
     async def get_all(self) -> list[ContaOutputSchema]:
         busca = await self.repository.get_all()
 
-        if busca is None:
-            return None
-
         return busca
 
     async def create(self, conta_schema: ContaSchema) -> ContaResponseSchema:

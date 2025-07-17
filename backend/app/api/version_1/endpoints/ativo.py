@@ -64,6 +64,6 @@ async def get_ativo_by_conta_id(
 ) -> list[AtivoOutputSchema]:
     service = AtivoService(db)
     try:
-        return await service.get_by_conta(conta_id)
+        return await service.get_by_conta_id(conta_id)
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))

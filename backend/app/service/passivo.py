@@ -13,8 +13,8 @@ class PassivoService:
 
         return busca
 
-    async def get_by_conta(self, conta_id: int) -> list[PassivoOutputSchema]:
-        busca = await self.repository.get_by_conta(conta_id)
+    async def get_by_conta_id(self, conta_id: int) -> list[PassivoOutputSchema]:
+        busca = await self.repository.get_by_conta_id(conta_id)
 
         return busca
 
@@ -25,9 +25,6 @@ class PassivoService:
 
     async def get_all(self) -> list[PassivoOutputSchema]:
         busca = await self.repository.get_all()
-
-        if busca is None:
-            return None
 
         return busca
 

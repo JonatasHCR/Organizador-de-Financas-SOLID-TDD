@@ -38,7 +38,7 @@ async def test_service_get_by_conta(async_db):
     service = PassivoService(async_db)
     await service.create(PassivoSchema(**passivo_teste))
 
-    passivo = await service.get_by_conta(passivo_teste["conta_id"])
+    passivo = await service.get_by_conta_id(passivo_teste["conta_id"])
     assert len(passivo) > 0
 
 

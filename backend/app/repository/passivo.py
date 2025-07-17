@@ -52,7 +52,7 @@ class PassivoRepository:
 
         return [PassivoOutputSchema.model_validate(passivo) for passivo in busca]
 
-    async def get_by_conta(self, conta_id: int) -> list[PassivoOutputSchema]:
+    async def get_by_conta_id(self, conta_id: int) -> list[PassivoOutputSchema]:
         busca = await self.__db.execute(
             select(Passivo).where(Passivo.conta_id == conta_id)
         )

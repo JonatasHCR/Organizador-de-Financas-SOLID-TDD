@@ -17,16 +17,13 @@ class InvestimentoService:
 
         return busca
 
-    async def get_by_conta(self, conta_id: int) -> list[InvestimentoOutputSchema]:
-        busca = await self.repository.get_by_conta(conta_id)
+    async def get_by_conta_id(self, conta_id: int) -> list[InvestimentoOutputSchema]:
+        busca = await self.repository.get_by_conta_id(conta_id)
 
         return busca
 
     async def get_all(self) -> list[InvestimentoOutputSchema]:
         busca = await self.repository.get_all()
-
-        if busca is None:
-            return None
 
         return busca
 
