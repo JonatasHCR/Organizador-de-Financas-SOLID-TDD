@@ -18,6 +18,11 @@ class PassivoService:
 
         return busca
 
+    async def get_by_referencia(self, referencia: str) -> list[PassivoOutputSchema]:
+        busca = await self.repository.get_by_referencia(referencia)
+
+        return busca
+
     async def get_all(self) -> list[PassivoOutputSchema]:
         busca = await self.repository.get_all()
 

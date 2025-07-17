@@ -1,3 +1,6 @@
+from zoneinfo import ZoneInfo
+from datetime import datetime
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -27,23 +30,39 @@ class PassivoRepository:
 
         return busca
 
-    async def get_by_conta(self, conta_id: int) -> list[PassivoOutputSchema] | None:
+    async def get_by_referencia(self, referencia: str) -> list[PassivoOutputSchema]:
         busca = await self.__db.execute(
-            select(Passivo).where(Passivo.id_conta == conta_id)
+            select(Passivo).where(Passivo.referencia == referencia)
         )
         busca = busca.scalars().all()
 
-        if busca is None:
-            return None
+        return [PassivoOutputSchema.model_validate(passivo) for passivo in busca]
+
+    async def get_by_plano(self, plano: str) -> list[PassivoOutputSchema]:
+        busca = await self.__db.execute(
+            select(Passivo).where(Passivo.frequencia == plano)
+        )
+        busca = busca.scalars().all()
 
         return [PassivoOutputSchema.model_validate(passivo) for passivo in busca]
 
-    async def get_all(self) -> list[PassivoOutputSchema] | None:
-        busca = await self.__db.execute(select(Passivo))
+    async def get_by_fixo(self, fixo: str) -> list[PassivoOutputSchema]:
+        busca = await self.__db.execute(select(Passivo).where(Passivo.eh_fixo == fixo))
         busca = busca.scalars().all()
 
-        if busca is None:
-            return None
+        return [PassivoOutputSchema.model_validate(passivo) for passivo in busca]
+
+    async def get_by_conta(self, conta_id: int) -> list[PassivoOutputSchema]:
+        busca = await self.__db.execute(
+            select(Passivo).where(Passivo.conta_id == conta_id)
+        )
+        busca = busca.scalars().all()
+
+        return [PassivoOutputSchema.model_validate(passivo) for passivo in busca]
+
+    async def get_all(self) -> list[PassivoOutputSchema]:
+        busca = await self.__db.execute(select(Passivo))
+        busca = busca.scalars().all()
 
         return [PassivoOutputSchema.model_validate(passivo) for passivo in busca]
 
@@ -54,7 +73,9 @@ class PassivoRepository:
         await self.__db.refresh(passivo)
 
         return PassivoResponseSchema(
-            status="Create", passivo=PassivoOutputSchema.model_validate(passivo)
+            status="Create",
+            passivo=PassivoOutputSchema.model_validate(passivo),
+            data_hora=datetime.now(ZoneInfo("America/Bahia")),
         )
 
     async def update(
@@ -70,7 +91,9 @@ class PassivoRepository:
         await self.__db.refresh(passivo)
 
         return PassivoResponseSchema(
-            status="Update", passivo=PassivoOutputSchema.model_validate(passivo)
+            status="Update",
+            passivo=PassivoOutputSchema.model_validate(passivo),
+            data_hora=datetime.now(ZoneInfo("America/Bahia")),
         )
 
     async def delete(self, passivo_id: int) -> PassivoResponseSchema:
@@ -80,5 +103,7 @@ class PassivoRepository:
         await self.__db.flush()
 
         return PassivoResponseSchema(
-            status="Delete", passivo=PassivoOutputSchema.model_validate(passivo)
+            status="Delete",
+            passivo=PassivoOutputSchema.model_validate(passivo),
+            data_hora=datetime.now(ZoneInfo("America/Bahia")),
         )

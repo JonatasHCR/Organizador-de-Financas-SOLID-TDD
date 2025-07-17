@@ -18,6 +18,11 @@ class AtivoService:
 
         return busca
 
+    async def get_by_referencia(self, referencia: str) -> list[AtivoOutputSchema]:
+        busca = await self.repository.get_by_referencia(referencia)
+
+        return busca
+
     async def get_all(self) -> list[AtivoOutputSchema]:
         busca = await self.repository.get_all()
 

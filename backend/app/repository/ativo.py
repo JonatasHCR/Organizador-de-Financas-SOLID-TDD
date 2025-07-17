@@ -1,3 +1,6 @@
+from zoneinfo import ZoneInfo
+from datetime import datetime
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -27,21 +30,23 @@ class AtivoRepository:
 
         return busca
 
-    async def get_by_conta(self, conta_id: int) -> list[AtivoOutputSchema] | None:
-        busca = await self.__db.execute(select(Ativo).where(Ativo.id_conta == conta_id))
+    async def get_by_conta(self, conta_id: int) -> list[AtivoOutputSchema]:
+        busca = await self.__db.execute(select(Ativo).where(Ativo.conta_id == conta_id))
         busca = busca.scalars().all()
-
-        if busca is None:
-            return None
 
         return [AtivoOutputSchema.model_validate(ativo) for ativo in busca]
 
-    async def get_all(self) -> list[AtivoOutputSchema] | None:
-        busca = await self.__db.execute(select(Ativo))
+    async def get_by_referencia(self, referencia: str) -> list[AtivoOutputSchema]:
+        busca = await self.__db.execute(
+            select(Ativo).where(Ativo.referencia == referencia)
+        )
         busca = busca.scalars().all()
 
-        if busca is None:
-            return None
+        return [AtivoOutputSchema.model_validate(ativo) for ativo in busca]
+
+    async def get_all(self) -> list[AtivoOutputSchema]:
+        busca = await self.__db.execute(select(Ativo))
+        busca = busca.scalars().all()
 
         return [AtivoOutputSchema.model_validate(ativo) for ativo in busca]
 
@@ -52,7 +57,9 @@ class AtivoRepository:
         await self.__db.refresh(ativo)
 
         return AtivoResponseSchema(
-            status="Create", ativo=AtivoOutputSchema.model_validate(ativo)
+            status="Create",
+            ativo=AtivoOutputSchema.model_validate(ativo),
+            data_hora=datetime.now(ZoneInfo("America/Bahia")),
         )
 
     async def update(
@@ -68,7 +75,9 @@ class AtivoRepository:
         await self.__db.refresh(ativo)
 
         return AtivoResponseSchema(
-            status="Update", ativo=AtivoOutputSchema.model_validate(ativo)
+            status="Update",
+            ativo=AtivoOutputSchema.model_validate(ativo),
+            data_hora=datetime.now(ZoneInfo("America/Bahia")),
         )
 
     async def delete(self, ativo_id: int) -> AtivoResponseSchema:
@@ -78,5 +87,7 @@ class AtivoRepository:
         await self.__db.flush()
 
         return AtivoResponseSchema(
-            status="Delete", ativo=AtivoOutputSchema.model_validate(ativo)
+            status="Delete",
+            ativo=AtivoOutputSchema.model_validate(ativo),
+            data_hora=datetime.now(ZoneInfo("America/Bahia")),
         )
