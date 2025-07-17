@@ -17,7 +17,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Projeto Financeiro API",
+    title="Organizador de Finanças API",
     docs_url="/documentation",
     redoc_url="/recaudacao",
     openapi_url="/api/openapi.json",

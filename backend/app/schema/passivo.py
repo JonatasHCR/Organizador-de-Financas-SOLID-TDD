@@ -8,14 +8,14 @@ from pydantic import BaseModel, Field, ConfigDict
 class PassivoSchema(BaseModel):
 
     nome: str = Field(..., description="Nome do passivo")
-    descricao: str
+    descricao: Optional[str]
     valor: float = Field(..., ge=0, description="Valor do passivo")
     referente: str = Field(
         ..., description="A associação do passivo, ex: Saúde, Lazer, Boleto"
     )
     data: date = Field(..., description="Data que foi adquirido o passivo")
     fixo: Literal["S", "N"]
-    vencimento: date
+    vencimento: Optional[date]
     plano: Optional[Literal["D", "M", "S"]]
     id_conta: int = Field(..., gt=0, description="Conta que está relacionado")
 
@@ -28,7 +28,7 @@ class PassivoOutputSchema(PassivoSchema):
 
 class PassivoResponseSchema(BaseModel):
     status: str = Field(..., description="Status da resposta")
-    ativo: PassivoOutputSchema = Field(..., description="Passivo")
+    passivo: PassivoOutputSchema = Field(..., description="Passivo")
     data: datetime = Field(
         datetime.now(ZoneInfo("America/Bahia")), description="Data e hora da resposta"
     )

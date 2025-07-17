@@ -8,11 +8,12 @@ from pydantic import BaseModel, Field, ConfigDict
 class InvestimentoSchema(BaseModel):
 
     nome: str = Field(..., description="Nome do investimento")
-    descricao: str
+    descricao: Optional[str]
+    tipo: Literal["A", "FII", "C", "ETF", "ETFI", "AI", "TD", "RF"] = Field(
+        ..., description="Tipo de investimento"
+    )
     valor: float = Field(..., ge=0, description="Valor do investimento")
     data: date = Field(..., description="Data que foi adquirido o investimento")
-    fixo: Literal["S", "N"]
-    tipo_remuneracao: Optional[Literal["Q", "M", "S"]]
     id_conta: int = Field(..., gt=0, description="Conta que está relacionado")
 
     model_config = ConfigDict(from_attributes=True)
@@ -24,7 +25,7 @@ class InvestimentoOutputSchema(InvestimentoSchema):
 
 class InvestimentoResponseSchema(BaseModel):
     status: str = Field(..., description="Status da resposta")
-    ativo: InvestimentoOutputSchema = Field(..., description="Investimento")
+    investimento: InvestimentoOutputSchema = Field(..., description="Investimento")
     data: datetime = Field(
         datetime.now(ZoneInfo("America/Bahia")), description="Data e hora da resposta"
     )
