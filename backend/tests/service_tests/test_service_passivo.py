@@ -6,14 +6,14 @@ from app.service.passivo import PassivoService
 
 passivo_teste = {
     "nome": "Passivo Teste",
+    "referencia": "Emprestado",
     "descricao": None,
     "valor": 100,
-    "referente": "Emprestado",
     "data": "2025-07-12",
-    "fixo": "N",
+    "eh_fixo": False,
+    "frequencia": None,
     "vencimento": None,
-    "plano": None,
-    "id_conta": 1,
+    "conta_id": 1,
 }
 
 
@@ -38,7 +38,25 @@ async def test_service_get_by_conta(async_db):
     service = PassivoService(async_db)
     await service.create(PassivoSchema(**passivo_teste))
 
-    passivo = await service.get_by_conta(1)
+    passivo = await service.get_by_conta(passivo_teste["conta_id"])
+    assert len(passivo) > 0
+
+
+@pytest.mark.asyncio
+async def test_service_get_by_referencia(async_db):
+    service = PassivoService(async_db)
+    await service.create(PassivoSchema(**passivo_teste))
+
+    passivo = await service.get_by_referencia(passivo_teste["referencia"])
+    assert len(passivo) > 0
+
+
+@pytest.mark.asyncio
+async def test_service_get_by_referencia(async_db):
+    service = PassivoService(async_db)
+    await service.create(PassivoSchema(**passivo_teste))
+
+    passivo = await service.get_by_referencia(passivo_teste["referencia"])
     assert len(passivo) > 0
 
 

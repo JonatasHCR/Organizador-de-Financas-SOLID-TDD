@@ -6,14 +6,14 @@ from app.service.ativo import AtivoService
 
 ativo_teste = {
     "nome": "Ativo Teste",
+    "referencia": "Emprestado",
     "descricao": None,
     "valor": 100,
-    "referente": "Emprestado",
-    "data": "2025-07-12",
-    "fixo": "N",
+    "data_adquirido": "2025-07-12",
+    "eh_fixo": False,
     "tipo_remuneracao": None,
-    "finalizado": None,
-    "id_conta": 1,
+    "data_finalizado": None,
+    "conta_id": 1,
 }
 
 
@@ -38,7 +38,7 @@ async def test_service_get_by_conta(async_db):
     service = AtivoService(async_db)
     await service.create(AtivoSchema(**ativo_teste))
 
-    ativo = await service.get_by_conta(1)
+    ativo = await service.get_by_conta(ativo_teste["conta_id"])
     assert len(ativo) > 0
 
 

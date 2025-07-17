@@ -10,7 +10,7 @@ investimento_teste = {
     "valor": 100,
     "tipo": "A",
     "data": "2025-07-12",
-    "id_conta": 1,
+    "conta_id": 1,
 }
 
 
@@ -35,7 +35,7 @@ async def test_service_get_by_conta(async_db):
     service = InvestimentoService(async_db)
     await service.create(InvestimentoSchema(**investimento_teste))
 
-    investimento = await service.get_by_conta(1)
+    investimento = await service.get_by_conta(investimento_teste["conta_id"])
     assert len(investimento) > 0
 
 
