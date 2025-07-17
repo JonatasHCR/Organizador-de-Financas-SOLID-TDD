@@ -43,6 +43,14 @@ async def test_service_get_by_conta(async_db):
 
 
 @pytest.mark.asyncio
+async def test_service_get_by_referencia(async_db):
+    service = AtivoService(async_db)
+    await service.create(AtivoSchema(**ativo_teste))
+
+    passivo = await service.get_by_referencia(ativo_teste["referencia"])
+    assert len(passivo) > 0
+
+@pytest.mark.asyncio
 async def test_service_update(async_db):
     service = AtivoService(async_db)
     ativo = await service.create(AtivoSchema(**ativo_teste))

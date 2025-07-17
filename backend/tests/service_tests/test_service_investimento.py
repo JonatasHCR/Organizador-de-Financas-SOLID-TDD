@@ -9,7 +9,7 @@ investimento_teste = {
     "descricao": None,
     "valor": 100,
     "tipo": "A",
-    "data": "2025-07-12",
+    "data_adquirido": "2025-07-12",
     "conta_id": 1,
 }
 
