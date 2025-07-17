@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -43,5 +45,25 @@ async def get_ativo_by_id(ativo_id: int, db: AsyncSession = Depends(get_db)):
     service = AtivoService(db)
     try:
         return await service.get_by_id(ativo_id)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_ativo.get("/", response_model=List[AtivoOutputSchema])
+async def get_ativo_all(db: AsyncSession = Depends(get_db)) -> list[AtivoOutputSchema]:
+    service = AtivoService(db)
+    try:
+        return await service.get_all()
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_ativo.get("/conta/id/{conta_id}", response_model=List[AtivoOutputSchema])
+async def get_ativo_by_conta_id(
+    conta_id: int, db: AsyncSession = Depends(get_db)
+) -> list[AtivoOutputSchema]:
+    service = AtivoService(db)
+    try:
+        return await service.get_by_conta(conta_id)
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))

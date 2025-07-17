@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -45,5 +47,27 @@ async def get_passivo_by_id(passivo_id: int, db: AsyncSession = Depends(get_db))
     service = PassivoService(db)
     try:
         return await service.get_by_id(passivo_id)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_passivo.get("/", response_model=List[PassivoOutputSchema])
+async def get_passivo_all(
+    db: AsyncSession = Depends(get_db),
+) -> list[PassivoOutputSchema]:
+    service = PassivoService(db)
+    try:
+        return await service.get_all()
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_passivo.get("/conta/id/{conta_id}", response_model=List[PassivoOutputSchema])
+async def get_passivo_by_conta_id(
+    conta_id: int, db: AsyncSession = Depends(get_db)
+) -> list[PassivoOutputSchema]:
+    service = PassivoService(db)
+    try:
+        return await service.get_by_conta(conta_id)
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))

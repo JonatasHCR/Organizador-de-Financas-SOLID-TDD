@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -57,5 +59,29 @@ async def get_investimento_by_id(
     service = InvestimentoService(db)
     try:
         return await service.get_by_id(investimento_id)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_investimento.get("/", response_model=List[InvestimentoOutputSchema])
+async def get_investimento_all(
+    db: AsyncSession = Depends(get_db),
+) -> list[InvestimentoOutputSchema]:
+    service = InvestimentoService(db)
+    try:
+        return await service.get_all()
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_investimento.get(
+    "/conta/id/{conta_id}", response_model=List[InvestimentoOutputSchema]
+)
+async def get_investimento_by_conta_id(
+    conta_id: int, db: AsyncSession = Depends(get_db)
+) -> list[InvestimentoOutputSchema]:
+    service = InvestimentoService(db)
+    try:
+        return await service.get_by_conta(conta_id)
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))
