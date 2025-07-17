@@ -20,10 +20,10 @@ class Investimento(Base):
     descricao = Column(Text, nullable=True)
     tipo = Column(String(4), nullable=False)
     valor = Column(Numeric, nullable=False)
-    data = Column(
+    data_adquirido = Column(
         Date, nullable=False, comment="Data em que foi adquirido o investimento"
     )
-    id_conta = Column(
+    conta_id = Column(
         Integer, nullable=False, comment="Conta a qual o investimento está relacionado"
     )
 
@@ -33,10 +33,10 @@ class Investimento(Base):
             "ck_investimentos_tipo",
         ),
         ForeignKeyConstraint(
-            ["id_conta"],
+            ["conta_id"],
             ["tb_contas.id"],
             name="fk_investimento_conta_id",
             ondelete="CASCADE",
-            onupdate="CASCADE"
+            onupdate="CASCADE",
         ),
     )
