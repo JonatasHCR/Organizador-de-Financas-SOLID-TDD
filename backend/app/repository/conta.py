@@ -1,3 +1,6 @@
+from zoneinfo import ZoneInfo
+from datetime import datetime
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -53,7 +56,9 @@ class ContaRepository:
         await self.__db.refresh(conta)
 
         return ContaResponseSchema(
-            status="Create", conta=ContaOutputSchema.model_validate(conta)
+            status="Create",
+            conta=ContaOutputSchema.model_validate(conta),
+            data_hora=datetime.now(ZoneInfo("America/Bahia")),
         )
 
     async def update(
@@ -69,7 +74,9 @@ class ContaRepository:
         await self.__db.refresh(conta)
 
         return ContaResponseSchema(
-            status="Update", conta=ContaOutputSchema.model_validate(conta)
+            status="Update",
+            conta=ContaOutputSchema.model_validate(conta),
+            data_hora=datetime.now(ZoneInfo("America/Bahia")),
         )
 
     async def delete(self, conta_id: int) -> ContaResponseSchema:
@@ -79,5 +86,7 @@ class ContaRepository:
         await self.__db.flush()
 
         return ContaResponseSchema(
-            status="Delete", conta=ContaOutputSchema.model_validate(conta)
+            status="Delete",
+            conta=ContaOutputSchema.model_validate(conta),
+            data_hora=datetime.now(ZoneInfo("America/Bahia")),
         )

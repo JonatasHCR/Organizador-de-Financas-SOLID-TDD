@@ -40,7 +40,7 @@ class Passivo(Base):
     )
 
     __table_args__ = (
-        CheckConstraint("plano IN ('D', 'M', 'S')", "ck_passivos_plano_DMS"),
+        CheckConstraint("frequencia IN ('D', 'M', 'S')", "ck_passivos_plano_DMS"),
         ForeignKeyConstraint(
             ["conta_id"],
             ["tb_contas.id"],

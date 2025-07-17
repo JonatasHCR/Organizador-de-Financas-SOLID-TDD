@@ -1,3 +1,6 @@
+from zoneinfo import ZoneInfo
+from datetime import datetime
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -39,7 +42,7 @@ class InvestimentoRepository:
         self, conta_id: int
     ) -> list[InvestimentoOutputSchema] | None:
         busca = await self.__db.execute(
-            select(Investimento).where(Investimento.id_conta == conta_id)
+            select(Investimento).where(Investimento.conta_id == conta_id)
         )
         busca = busca.scalars().all()
 
@@ -74,6 +77,7 @@ class InvestimentoRepository:
         return InvestimentoResponseSchema(
             status="Create",
             investimento=InvestimentoOutputSchema.model_validate(investimento),
+            data_hora=datetime.now(ZoneInfo("America/Bahia")),
         )
 
     async def update(
@@ -91,6 +95,7 @@ class InvestimentoRepository:
         return InvestimentoResponseSchema(
             status="Update",
             investimento=InvestimentoOutputSchema.model_validate(investimento),
+            data_hora=datetime.now(ZoneInfo("America/Bahia")),
         )
 
     async def delete(self, investimento_id: int) -> InvestimentoResponseSchema:
@@ -102,4 +107,5 @@ class InvestimentoRepository:
         return InvestimentoResponseSchema(
             status="Delete",
             investimento=InvestimentoOutputSchema.model_validate(investimento),
+            data_hora=datetime.now(ZoneInfo("America/Bahia")),
         )
