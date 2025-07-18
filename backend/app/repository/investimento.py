@@ -38,28 +38,31 @@ class InvestimentoRepository:
 
         return busca
 
-    async def get_by_conta_id(
-        self, conta_id: int
-    ) -> list[InvestimentoOutputSchema] | None:
+    async def get_by_conta_id(self, conta_id: int) -> list[InvestimentoOutputSchema]:
         busca = await self.__db.execute(
             select(Investimento).where(Investimento.conta_id == conta_id)
         )
         busca = busca.scalars().all()
-
-        if busca is None:
-            return None
 
         return [
             InvestimentoOutputSchema.model_validate(investimento)
             for investimento in busca
         ]
 
-    async def get_all(self) -> list[InvestimentoOutputSchema] | None:
-        busca = await self.__db.execute(select(Investimento))
+    async def get_by_tipo(self, tipo: str) -> list[InvestimentoOutputSchema]:
+        busca = await self.__db.execute(
+            select(Investimento).where(Investimento.tipo == tipo)
+        )
         busca = busca.scalars().all()
 
-        if busca is None:
-            return None
+        return [
+            InvestimentoOutputSchema.model_validate(investimento)
+            for investimento in busca
+        ]
+
+    async def get_all(self) -> list[InvestimentoOutputSchema]:
+        busca = await self.__db.execute(select(Investimento))
+        busca = busca.scalars().all()
 
         return [
             InvestimentoOutputSchema.model_validate(investimento)

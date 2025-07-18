@@ -22,6 +22,11 @@ class InvestimentoService:
 
         return busca
 
+    async def get_by_tipo(self, tipo: str) -> list[InvestimentoOutputSchema]:
+        busca = await self.repository.get_by_tipo(tipo)
+
+        return busca
+
     async def get_all(self) -> list[InvestimentoOutputSchema]:
         busca = await self.repository.get_all()
 

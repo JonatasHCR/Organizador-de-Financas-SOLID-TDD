@@ -23,6 +23,18 @@ class AtivoService:
 
         return busca
 
+    async def get_eh_fixo(self, eh_fixo: bool) -> list[AtivoOutputSchema]:
+        busca = await self.repository.get_eh_fixo(eh_fixo)
+
+        return busca
+
+    async def get_by_tipo_remuneracao(
+        self, tipo_remuneracao: str
+    ) -> list[AtivoOutputSchema]:
+        busca = await self.repository.get_by_tipo_remuneracao(tipo_remuneracao)
+
+        return busca
+
     async def get_all(self) -> list[AtivoOutputSchema]:
         busca = await self.repository.get_all()
 

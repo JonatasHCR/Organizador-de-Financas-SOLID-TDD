@@ -38,16 +38,18 @@ class PassivoRepository:
 
         return [PassivoOutputSchema.model_validate(passivo) for passivo in busca]
 
-    async def get_by_plano(self, plano: str) -> list[PassivoOutputSchema]:
+    async def get_by_frequencia(self, frequencia: str) -> list[PassivoOutputSchema]:
         busca = await self.__db.execute(
-            select(Passivo).where(Passivo.frequencia == plano)
+            select(Passivo).where(Passivo.frequencia == frequencia)
         )
         busca = busca.scalars().all()
 
         return [PassivoOutputSchema.model_validate(passivo) for passivo in busca]
 
-    async def get_by_fixo(self, fixo: str) -> list[PassivoOutputSchema]:
-        busca = await self.__db.execute(select(Passivo).where(Passivo.eh_fixo == fixo))
+    async def get_eh_fixo(self, eh_fixo: bool) -> list[PassivoOutputSchema]:
+        busca = await self.__db.execute(
+            select(Passivo).where(Passivo.eh_fixo == eh_fixo)
+        )
         busca = busca.scalars().all()
 
         return [PassivoOutputSchema.model_validate(passivo) for passivo in busca]

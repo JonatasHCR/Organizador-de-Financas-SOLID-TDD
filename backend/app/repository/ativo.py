@@ -44,6 +44,22 @@ class AtivoRepository:
 
         return [AtivoOutputSchema.model_validate(ativo) for ativo in busca]
 
+    async def get_by_tipo_remuneracao(
+        self, tipo_remuneracao: str
+    ) -> list[AtivoOutputSchema]:
+        busca = await self.__db.execute(
+            select(Ativo).where(Ativo.tipo_remuneracao == tipo_remuneracao)
+        )
+        busca = busca.scalars().all()
+
+        return [AtivoOutputSchema.model_validate(ativo) for ativo in busca]
+
+    async def get_eh_fixo(self, eh_fixo: bool) -> list[AtivoOutputSchema]:
+        busca = await self.__db.execute(select(Ativo).where(Ativo.eh_fixo == eh_fixo))
+        busca = busca.scalars().all()
+
+        return [AtivoOutputSchema.model_validate(ativo) for ativo in busca]
+
     async def get_all(self) -> list[AtivoOutputSchema]:
         busca = await self.__db.execute(select(Ativo))
         busca = busca.scalars().all()

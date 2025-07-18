@@ -23,6 +23,16 @@ class PassivoService:
 
         return busca
 
+    async def get_eh_fixo(self, eh_fixo: bool) -> list[PassivoOutputSchema]:
+        busca = await self.repository.get_eh_fixo(eh_fixo)
+
+        return busca
+
+    async def get_by_frequencia(self, frequencia: str) -> list[PassivoOutputSchema]:
+        busca = await self.repository.get_by_frequencia(frequencia)
+
+        return busca
+
     async def get_all(self) -> list[PassivoOutputSchema]:
         busca = await self.repository.get_all()
 
