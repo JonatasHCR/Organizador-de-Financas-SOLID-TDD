@@ -51,17 +51,6 @@ async def get_passivo_by_id(passivo_id: int, db: AsyncSession = Depends(get_db))
         raise HTTPException(status_code=400, detail=str(error))
 
 
-@router_passivo.get("/", response_model=List[PassivoOutputSchema])
-async def get_passivo_all(
-    db: AsyncSession = Depends(get_db),
-) -> list[PassivoOutputSchema]:
-    service = PassivoService(db)
-    try:
-        return await service.get_all()
-    except ValueError as error:
-        raise HTTPException(status_code=400, detail=str(error))
-
-
 @router_passivo.get("/conta/id/{conta_id}", response_model=List[PassivoOutputSchema])
 async def get_passivo_by_conta_id(
     conta_id: int, db: AsyncSession = Depends(get_db)
@@ -69,5 +58,53 @@ async def get_passivo_by_conta_id(
     service = PassivoService(db)
     try:
         return await service.get_by_conta_id(conta_id)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_passivo.get("/eh/fixo", response_model=List[PassivoOutputSchema])
+async def get_passivo_eh_fixo(
+    eh_fixo: bool, db: AsyncSession = Depends(get_db)
+) -> list[PassivoOutputSchema]:
+    service = PassivoService(db)
+    try:
+        return await service.get_eh_fixo(eh_fixo)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_passivo.get(
+    "/frequencia/{frequencia}", response_model=List[PassivoOutputSchema]
+)
+async def get_passivo_by_frequencia(
+    frequencia: str, db: AsyncSession = Depends(get_db)
+) -> list[PassivoOutputSchema]:
+    service = PassivoService(db)
+    try:
+        return await service.get_by_frequencia(frequencia)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_passivo.get(
+    "/referencia/{referencia}", response_model=List[PassivoOutputSchema]
+)
+async def get_passivo_by_referencia(
+    referencia: str, db: AsyncSession = Depends(get_db)
+) -> list[PassivoOutputSchema]:
+    service = PassivoService(db)
+    try:
+        return await service.get_by_referencia(referencia)
+    except ValueError as error:
+        raise HTTPException(status_code=400, detail=str(error))
+
+
+@router_passivo.get("/", response_model=List[PassivoOutputSchema])
+async def get_passivo_all(
+    db: AsyncSession = Depends(get_db),
+) -> list[PassivoOutputSchema]:
+    service = PassivoService(db)
+    try:
+        return await service.get_all()
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))
