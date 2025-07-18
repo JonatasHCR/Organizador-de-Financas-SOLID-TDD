@@ -17,9 +17,9 @@ async def test_service_create(async_db):
 @pytest.mark.asyncio
 async def test_service_get_by_id(async_db):
     service = ContaService(async_db)
-    await service.create(ContaSchema(**conta_teste))
+    teste_id = await service.create(ContaSchema(**conta_teste))
 
-    conta = await service.get_by_id(1)
+    conta = await service.get_by_id(teste_id.conta.id)
     assert conta.nome == conta_teste["nome"]
 
 
@@ -30,6 +30,15 @@ async def test_service_get_by_nome(async_db):
 
     conta = await service.get_by_nome(conta_teste["nome"])
     assert conta.id is not None
+
+
+@pytest.mark.asyncio
+async def test_service_get_all(async_db):
+    service = ContaService(async_db)
+    await service.create(ContaSchema(**conta_teste))
+
+    contas = await service.get_all()
+    assert len(contas) > 0
 
 
 @pytest.mark.asyncio

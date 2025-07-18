@@ -10,8 +10,8 @@ ativo_teste = {
     "descricao": None,
     "valor": 100,
     "data_adquirido": "2025-07-12",
-    "eh_fixo": False,
-    "tipo_remuneracao": None,
+    "eh_fixo": True,
+    "tipo_remuneracao": "M",
     "data_finalizado": None,
     "conta_id": 1,
 }
@@ -27,19 +27,19 @@ async def test_service_create(async_db):
 @pytest.mark.asyncio
 async def test_service_get_by_id(async_db):
     service = AtivoService(async_db)
-    await service.create(AtivoSchema(**ativo_teste))
+    teste_id = await service.create(AtivoSchema(**ativo_teste))
 
-    ativo = await service.get_by_id(1)
+    ativo = await service.get_by_id(teste_id.ativo.id)
     assert ativo.nome == ativo_teste["nome"]
 
 
 @pytest.mark.asyncio
-async def test_service_get_by_conta(async_db):
+async def test_service_get_by_conta_id(async_db):
     service = AtivoService(async_db)
     await service.create(AtivoSchema(**ativo_teste))
 
-    ativo = await service.get_by_conta_id(ativo_teste["conta_id"])
-    assert len(ativo) > 0
+    ativos = await service.get_by_conta_id(ativo_teste["conta_id"])
+    assert len(ativos) > 0
 
 
 @pytest.mark.asyncio
@@ -47,8 +47,36 @@ async def test_service_get_by_referencia(async_db):
     service = AtivoService(async_db)
     await service.create(AtivoSchema(**ativo_teste))
 
-    passivo = await service.get_by_referencia(ativo_teste["referencia"])
-    assert len(passivo) > 0
+    ativos = await service.get_by_referencia(ativo_teste["referencia"])
+    assert len(ativos) > 0
+
+
+@pytest.mark.asyncio
+async def test_service_get_by_fixo(async_db):
+    service = AtivoService(async_db)
+    await service.create(AtivoSchema(**ativo_teste))
+
+    ativos = await service.get_eh_fixo(ativo_teste["eh_fixo"])
+    assert len(ativos) > 0
+
+
+@pytest.mark.asyncio
+async def test_service_get_tipo_remuneracao(async_db):
+    service = AtivoService(async_db)
+    await service.create(AtivoSchema(**ativo_teste))
+
+    ativos = await service.get_by_tipo_remuneracao(ativo_teste["tipo_remuneracao"])
+    assert len(ativos) > 0
+
+
+@pytest.mark.asyncio
+async def test_service_get_all(async_db):
+    service = AtivoService(async_db)
+    await service.create(AtivoSchema(**ativo_teste))
+
+    ativos = await service.get_all()
+    assert len(ativos) > 0
+
 
 @pytest.mark.asyncio
 async def test_service_update(async_db):

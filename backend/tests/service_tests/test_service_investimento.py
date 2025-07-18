@@ -24,19 +24,37 @@ async def test_service_create(async_db):
 @pytest.mark.asyncio
 async def test_service_get_by_id(async_db):
     service = InvestimentoService(async_db)
-    await service.create(InvestimentoSchema(**investimento_teste))
+    teste_id = await service.create(InvestimentoSchema(**investimento_teste))
 
-    investimento = await service.get_by_id(1)
+    investimento = await service.get_by_id(teste_id.investimento.id)
     assert investimento.nome == investimento_teste["nome"]
 
 
 @pytest.mark.asyncio
-async def test_service_get_by_conta(async_db):
+async def test_service_get_by_conta_id(async_db):
     service = InvestimentoService(async_db)
     await service.create(InvestimentoSchema(**investimento_teste))
 
-    investimento = await service.get_by_conta_id(investimento_teste["conta_id"])
-    assert len(investimento) > 0
+    investimentos = await service.get_by_conta_id(investimento_teste["conta_id"])
+    assert len(investimentos) > 0
+
+
+@pytest.mark.asyncio
+async def test_service_get_by_tipo(async_db):
+    service = InvestimentoService(async_db)
+    await service.create(InvestimentoSchema(**investimento_teste))
+
+    investimentos = await service.get_by_tipo(investimento_teste["tipo"])
+    assert len(investimentos) > 0
+
+
+@pytest.mark.asyncio
+async def test_service_get_all(async_db):
+    service = InvestimentoService(async_db)
+    await service.create(InvestimentoSchema(**investimento_teste))
+
+    investimentos = await service.get_all()
+    assert len(investimentos) > 0
 
 
 @pytest.mark.asyncio

@@ -10,8 +10,8 @@ passivo_teste = {
     "descricao": None,
     "valor": 100,
     "data": "2025-07-12",
-    "eh_fixo": False,
-    "frequencia": None,
+    "eh_fixo": True,
+    "frequencia": "M",
     "vencimento": None,
     "conta_id": 1,
 }
@@ -27,14 +27,14 @@ async def test_service_create(async_db):
 @pytest.mark.asyncio
 async def test_service_get_by_id(async_db):
     service = PassivoService(async_db)
-    await service.create(PassivoSchema(**passivo_teste))
+    teste_id = await service.create(PassivoSchema(**passivo_teste))
 
-    passivo = await service.get_by_id(1)
+    passivo = await service.get_by_id(teste_id.passivo.id)
     assert passivo.nome == passivo_teste["nome"]
 
 
 @pytest.mark.asyncio
-async def test_service_get_by_conta(async_db):
+async def test_service_get_by_conta_id(async_db):
     service = PassivoService(async_db)
     await service.create(PassivoSchema(**passivo_teste))
 
@@ -52,12 +52,30 @@ async def test_service_get_by_referencia(async_db):
 
 
 @pytest.mark.asyncio
-async def test_service_get_by_referencia(async_db):
+async def test_service_get_by_fixo(async_db):
     service = PassivoService(async_db)
     await service.create(PassivoSchema(**passivo_teste))
 
-    passivo = await service.get_by_referencia(passivo_teste["referencia"])
-    assert len(passivo) > 0
+    passivos = await service.get_eh_fixo(passivo_teste["eh_fixo"])
+    assert len(passivos) > 0
+
+
+@pytest.mark.asyncio
+async def test_service_get_by_frequencia(async_db):
+    service = PassivoService(async_db)
+    await service.create(PassivoSchema(**passivo_teste))
+
+    passivos = await service.get_by_frequencia(passivo_teste["frequencia"])
+    assert len(passivos) > 0
+
+
+@pytest.mark.asyncio
+async def test_service_get_all(async_db):
+    service = PassivoService(async_db)
+    await service.create(PassivoSchema(**passivo_teste))
+
+    passivos = await service.get_all()
+    assert len(passivos) > 0
 
 
 @pytest.mark.asyncio
