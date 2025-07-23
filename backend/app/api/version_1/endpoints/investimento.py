@@ -15,7 +15,9 @@ from app.service.investimento import InvestimentoService
 router_investimento = APIRouter(prefix="/investimento", tags=["Investimento"])
 
 
-@router_investimento.post("/create", response_model=InvestimentoResponseSchema)
+@router_investimento.post(
+    "/create", response_model=InvestimentoResponseSchema, status_code=201
+)
 async def create_investimento(
     investimento_schema: InvestimentoSchema, db: AsyncSession = Depends(get_db)
 ):
@@ -52,7 +54,9 @@ async def delete_investimento(investimento_id: int, db: AsyncSession = Depends(g
         raise HTTPException(status_code=400, detail=str(error))
 
 
-@router_investimento.get("/{investimento_id}", response_model=InvestimentoOutputSchema)
+@router_investimento.get(
+    "/id/{investimento_id}", response_model=InvestimentoOutputSchema
+)
 async def get_investimento_by_id(
     investimento_id: int, db: AsyncSession = Depends(get_db)
 ):

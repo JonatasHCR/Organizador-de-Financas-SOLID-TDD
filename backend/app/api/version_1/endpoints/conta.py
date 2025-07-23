@@ -11,7 +11,7 @@ from app.service.conta import ContaService
 router_conta = APIRouter(prefix="/conta", tags=["Conta"])
 
 
-@router_conta.post("/create", response_model=ContaResponseSchema)
+@router_conta.post("/create", response_model=ContaResponseSchema, status_code=201)
 async def create_conta(
     conta_schema: ContaSchema, db: AsyncSession = Depends(get_db)
 ) -> ContaResponseSchema:

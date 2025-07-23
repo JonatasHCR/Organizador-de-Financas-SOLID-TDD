@@ -22,10 +22,10 @@ app = FastAPI(
     redoc_url="/recaudacao",
     openapi_url="/api/openapi.json",
     openapi_tags=[
+        {"name": "Conta", "description": "Operações com Contas"},
         {"name": "Ativo", "description": "Operações com Ativos"},
         {"name": "Passivo", "description": "Operações com Passivos"},
         {"name": "Investimento", "description": "Operações com Investimentos"},
-        {"name": "Conta", "description": "Operações com Contas"},
     ],
     lifespan=lifespan,
 )

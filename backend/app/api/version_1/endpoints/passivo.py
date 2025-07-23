@@ -11,7 +11,7 @@ from app.service.passivo import PassivoService
 router_passivo = APIRouter(prefix="/passivo", tags=["Passivo"])
 
 
-@router_passivo.post("/create", response_model=PassivoResponseSchema)
+@router_passivo.post("/create", response_model=PassivoResponseSchema, status_code=201)
 async def create_passivo(
     passivo_schema: PassivoSchema, db: AsyncSession = Depends(get_db)
 ):
@@ -42,7 +42,7 @@ async def delete_passivo(passivo_id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=400, detail=str(error))
 
 
-@router_passivo.get("/{passivo_id}", response_model=PassivoOutputSchema)
+@router_passivo.get("/id/{passivo_id}", response_model=PassivoOutputSchema)
 async def get_passivo_by_id(passivo_id: int, db: AsyncSession = Depends(get_db)):
     service = PassivoService(db)
     try:

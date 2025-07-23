@@ -11,7 +11,7 @@ from app.service.ativo import AtivoService
 router_ativo = APIRouter(prefix="/ativo", tags=["Ativo"])
 
 
-@router_ativo.post("/create", response_model=AtivoResponseSchema)
+@router_ativo.post("/create", response_model=AtivoResponseSchema, status_code=201)
 async def create_ativo(ativo_schema: AtivoSchema, db: AsyncSession = Depends(get_db)):
     service = AtivoService(db)
     try:
@@ -40,7 +40,7 @@ async def delete_ativo(ativo_id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=400, detail=str(error))
 
 
-@router_ativo.get("/{ativo_id}", response_model=AtivoOutputSchema)
+@router_ativo.get("/id/{ativo_id}", response_model=AtivoOutputSchema)
 async def get_ativo_by_id(ativo_id: int, db: AsyncSession = Depends(get_db)):
     service = AtivoService(db)
     try:
