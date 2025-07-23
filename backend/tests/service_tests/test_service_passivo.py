@@ -18,6 +18,7 @@ passivo_teste = {
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_create(async_db):
     service = PassivoService(async_db)
     resposta = await service.create(PassivoSchema(**passivo_teste))
@@ -25,6 +26,7 @@ async def test_service_create(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_get_by_id(async_db):
     service = PassivoService(async_db)
     teste_id = await service.create(PassivoSchema(**passivo_teste))
@@ -34,6 +36,7 @@ async def test_service_get_by_id(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_get_by_conta_id(async_db):
     service = PassivoService(async_db)
     await service.create(PassivoSchema(**passivo_teste))
@@ -43,6 +46,7 @@ async def test_service_get_by_conta_id(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_get_by_referencia(async_db):
     service = PassivoService(async_db)
     await service.create(PassivoSchema(**passivo_teste))
@@ -52,6 +56,7 @@ async def test_service_get_by_referencia(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_get_by_fixo(async_db):
     service = PassivoService(async_db)
     await service.create(PassivoSchema(**passivo_teste))
@@ -61,6 +66,7 @@ async def test_service_get_by_fixo(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_get_by_frequencia(async_db):
     service = PassivoService(async_db)
     await service.create(PassivoSchema(**passivo_teste))
@@ -70,6 +76,7 @@ async def test_service_get_by_frequencia(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_get_all(async_db):
     service = PassivoService(async_db)
     await service.create(PassivoSchema(**passivo_teste))
@@ -79,6 +86,7 @@ async def test_service_get_all(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_update(async_db):
     service = PassivoService(async_db)
     passivo = await service.create(PassivoSchema(**passivo_teste))
@@ -93,6 +101,7 @@ async def test_service_update(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_delete(async_db):
     service = PassivoService(async_db)
     passivo = await service.create(PassivoSchema(**passivo_teste))

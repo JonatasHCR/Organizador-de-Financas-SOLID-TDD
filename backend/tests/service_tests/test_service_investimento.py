@@ -15,6 +15,7 @@ investimento_teste = {
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_create(async_db):
     service = InvestimentoService(async_db)
     resposta = await service.create(InvestimentoSchema(**investimento_teste))
@@ -22,6 +23,7 @@ async def test_service_create(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_get_by_id(async_db):
     service = InvestimentoService(async_db)
     teste_id = await service.create(InvestimentoSchema(**investimento_teste))
@@ -31,6 +33,7 @@ async def test_service_get_by_id(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_get_by_conta_id(async_db):
     service = InvestimentoService(async_db)
     await service.create(InvestimentoSchema(**investimento_teste))
@@ -40,6 +43,7 @@ async def test_service_get_by_conta_id(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_get_by_tipo(async_db):
     service = InvestimentoService(async_db)
     await service.create(InvestimentoSchema(**investimento_teste))
@@ -49,6 +53,7 @@ async def test_service_get_by_tipo(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_get_all(async_db):
     service = InvestimentoService(async_db)
     await service.create(InvestimentoSchema(**investimento_teste))
@@ -58,6 +63,7 @@ async def test_service_get_all(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_update(async_db):
     service = InvestimentoService(async_db)
     investimento = await service.create(InvestimentoSchema(**investimento_teste))
@@ -76,6 +82,7 @@ async def test_service_update(async_db):
 
 
 @pytest.mark.asyncio
+@pytest.mark.service
 async def test_service_delete(async_db):
     service = InvestimentoService(async_db)
     investimento = await service.create(InvestimentoSchema(**investimento_teste))
