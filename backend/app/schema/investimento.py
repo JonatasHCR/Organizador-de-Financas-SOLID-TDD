@@ -13,7 +13,9 @@ class InvestimentoSchema(BaseModel):
         ..., description="Tipo de investimento"
     )
     valor: float = Field(..., ge=0, description="Valor do investimento")
-    data_adquirido: date = Field(..., description="Data que foi adquirido o investimento")
+    data_adquirido: date = Field(
+        ..., description="Data que foi adquirido o investimento"
+    )
     conta_id: int = Field(..., gt=0, description="Conta que está relacionado")
 
     model_config = ConfigDict(from_attributes=True)
@@ -26,6 +28,6 @@ class InvestimentoOutputSchema(InvestimentoSchema):
 class InvestimentoResponseSchema(BaseModel):
     status: str = Field(..., description="Status da resposta")
     investimento: InvestimentoOutputSchema = Field(..., description="Investimento")
-    data_hora: datetime = Field(...,description="Data e hora da resposta")
+    data_hora: datetime = Field(..., description="Data e hora da resposta")
 
     model_config = ConfigDict(from_attributes=True)
