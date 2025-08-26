@@ -11,12 +11,15 @@ investimento_teste = {
 }
 conta_teste = {"nome": "Conta Teste", "descricao": None}
 
+URL_INVESTIMENTO = "/investimentos/"
+URL_CONTA = "/contas/"
+
 
 @pytest.mark.asyncio
 @pytest.mark.integration
 async def test_integration_create_update_get_delete_investimento(async_client):
 
-    response_create_conta = await async_client.post("/conta/create", json=conta_teste)
+    response_create_conta = await async_client.post(URL_CONTA, json=conta_teste)
     assert response_create_conta.status_code == 201
     assert response_create_conta.json()["status"] == "Create"
     assert response_create_conta.json()["conta"]["nome"] == conta_teste["nome"]
@@ -24,7 +27,7 @@ async def test_integration_create_update_get_delete_investimento(async_client):
     investimento_teste["conta_id"] = conta_id
 
     response_create_investimento = await async_client.post(
-        "/investimento/create", json=investimento_teste
+        URL_INVESTIMENTO, json=investimento_teste
     )
     assert response_create_investimento.status_code == 201
     assert response_create_investimento.json()["status"] == "Create"
@@ -36,7 +39,7 @@ async def test_integration_create_update_get_delete_investimento(async_client):
 
     investimento_teste["nome"] = "Investimento Teste Alterado"
     response_update_investimento = await async_client.put(
-        f"/investimento/update/{investimento_id}", json=investimento_teste
+        f"{URL_INVESTIMENTO}{investimento_id}", json=investimento_teste
     )
     assert response_update_investimento.status_code == 200
     assert response_update_investimento.json()["status"] == "Update"
@@ -46,16 +49,18 @@ async def test_integration_create_update_get_delete_investimento(async_client):
     )
 
     response_get_investimento = await async_client.get(
-        f"/investimento/id/{investimento_id}"
+        f"{URL_INVESTIMENTO}{investimento_id}"
     )
     assert response_get_investimento.status_code == 200
     assert response_get_investimento.json()["nome"] == investimento_teste["nome"]
 
-    response_get_by_conta = await async_client.get(f"/investimento/conta/id/{conta_id}")
+    response_get_by_conta = await async_client.get(
+        f"{URL_INVESTIMENTO}conta/{conta_id}"
+    )
     assert response_get_by_conta.status_code == 200
 
     response_delete_investimento = await async_client.delete(
-        f"/investimento/delete/{investimento_id}"
+        f"{URL_INVESTIMENTO}{investimento_id}"
     )
     assert response_delete_investimento.status_code == 200
     assert response_delete_investimento.json()["status"] == "Delete"
@@ -64,7 +69,7 @@ async def test_integration_create_update_get_delete_investimento(async_client):
         == investimento_teste["nome"]
     )
 
-    response_delete_conta = await async_client.delete(f"/conta/delete/{conta_id}")
+    response_delete_conta = await async_client.delete(f"{URL_CONTA}{conta_id}")
     assert response_delete_conta.status_code == 200
     assert response_delete_conta.json()["status"] == "Delete"
     assert response_delete_conta.json()["conta"]["nome"] == conta_teste["nome"]

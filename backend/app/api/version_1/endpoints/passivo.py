@@ -8,10 +8,10 @@ from app.schema.passivo import PassivoSchema, PassivoOutputSchema, PassivoRespon
 from app.service.passivo import PassivoService
 
 
-router_passivo = APIRouter(prefix="/passivo", tags=["Passivo"])
+router_passivo = APIRouter(prefix="/passivos", tags=["Passivo"])
 
 
-@router_passivo.post("/create", response_model=PassivoResponseSchema, status_code=201)
+@router_passivo.post("/", response_model=PassivoResponseSchema, status_code=201)
 async def create_passivo(
     passivo_schema: PassivoSchema, db: AsyncSession = Depends(get_db)
 ):
@@ -22,7 +22,7 @@ async def create_passivo(
         raise HTTPException(status_code=400, detail=str(error))
 
 
-@router_passivo.put("/update/{passivo_id}", response_model=PassivoResponseSchema)
+@router_passivo.put("/{passivo_id}", response_model=PassivoResponseSchema)
 async def update_passivo(
     passivo_id: int, passivo_schema: PassivoSchema, db: AsyncSession = Depends(get_db)
 ):
@@ -33,7 +33,7 @@ async def update_passivo(
         raise HTTPException(status_code=400, detail=str(error))
 
 
-@router_passivo.delete("/delete/{passivo_id}", response_model=PassivoResponseSchema)
+@router_passivo.delete("/{passivo_id}", response_model=PassivoResponseSchema)
 async def delete_passivo(passivo_id: int, db: AsyncSession = Depends(get_db)):
     service = PassivoService(db)
     try:
@@ -42,7 +42,7 @@ async def delete_passivo(passivo_id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=400, detail=str(error))
 
 
-@router_passivo.get("/id/{passivo_id}", response_model=PassivoOutputSchema)
+@router_passivo.get("/{passivo_id}", response_model=PassivoOutputSchema)
 async def get_passivo_by_id(passivo_id: int, db: AsyncSession = Depends(get_db)):
     service = PassivoService(db)
     try:
@@ -51,7 +51,7 @@ async def get_passivo_by_id(passivo_id: int, db: AsyncSession = Depends(get_db))
         raise HTTPException(status_code=400, detail=str(error))
 
 
-@router_passivo.get("/conta/id/{conta_id}", response_model=List[PassivoOutputSchema])
+@router_passivo.get("/conta/{conta_id}", response_model=List[PassivoOutputSchema])
 async def get_passivo_by_conta_id(
     conta_id: int, db: AsyncSession = Depends(get_db)
 ) -> list[PassivoOutputSchema]:

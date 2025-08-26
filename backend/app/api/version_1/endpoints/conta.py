@@ -8,10 +8,10 @@ from app.schema.conta import ContaSchema, ContaOutputSchema, ContaResponseSchema
 from app.service.conta import ContaService
 
 
-router_conta = APIRouter(prefix="/conta", tags=["Conta"])
+router_conta = APIRouter(prefix="/contas", tags=["Conta"])
 
 
-@router_conta.post("/create", response_model=ContaResponseSchema, status_code=201)
+@router_conta.post("/", response_model=ContaResponseSchema, status_code=201)
 async def create_conta(
     conta_schema: ContaSchema, db: AsyncSession = Depends(get_db)
 ) -> ContaResponseSchema:
@@ -22,7 +22,7 @@ async def create_conta(
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router_conta.put("/update/{conta_id}", response_model=ContaResponseSchema)
+@router_conta.put("/{conta_id}", response_model=ContaResponseSchema)
 async def update_conta(
     conta_id: int, conta_schema: ContaSchema, db: AsyncSession = Depends(get_db)
 ) -> ContaResponseSchema:
@@ -33,7 +33,7 @@ async def update_conta(
         raise HTTPException(status_code=400, detail=str(error))
 
 
-@router_conta.delete("/delete/{conta_id}", response_model=ContaResponseSchema)
+@router_conta.delete("/{conta_id}", response_model=ContaResponseSchema)
 async def delete_conta(
     conta_id: int, db: AsyncSession = Depends(get_db)
 ) -> ContaResponseSchema:

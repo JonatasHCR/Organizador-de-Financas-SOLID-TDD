@@ -12,11 +12,11 @@ from app.schema.investimento import (
 from app.service.investimento import InvestimentoService
 
 
-router_investimento = APIRouter(prefix="/investimento", tags=["Investimento"])
+router_investimento = APIRouter(prefix="/investimentos", tags=["Investimento"])
 
 
 @router_investimento.post(
-    "/create", response_model=InvestimentoResponseSchema, status_code=201
+    "/", response_model=InvestimentoResponseSchema, status_code=201
 )
 async def create_investimento(
     investimento_schema: InvestimentoSchema, db: AsyncSession = Depends(get_db)
@@ -29,7 +29,7 @@ async def create_investimento(
 
 
 @router_investimento.put(
-    "/update/{investimento_id}", response_model=InvestimentoResponseSchema
+    "/{investimento_id}", response_model=InvestimentoResponseSchema
 )
 async def update_investimento(
     investimento_id: int,
@@ -44,7 +44,7 @@ async def update_investimento(
 
 
 @router_investimento.delete(
-    "/delete/{investimento_id}", response_model=InvestimentoResponseSchema
+    "/{investimento_id}", response_model=InvestimentoResponseSchema
 )
 async def delete_investimento(investimento_id: int, db: AsyncSession = Depends(get_db)):
     service = InvestimentoService(db)
@@ -54,9 +54,7 @@ async def delete_investimento(investimento_id: int, db: AsyncSession = Depends(g
         raise HTTPException(status_code=400, detail=str(error))
 
 
-@router_investimento.get(
-    "/id/{investimento_id}", response_model=InvestimentoOutputSchema
-)
+@router_investimento.get("/{investimento_id}", response_model=InvestimentoOutputSchema)
 async def get_investimento_by_id(
     investimento_id: int, db: AsyncSession = Depends(get_db)
 ):
@@ -68,7 +66,7 @@ async def get_investimento_by_id(
 
 
 @router_investimento.get(
-    "/conta/id/{conta_id}", response_model=List[InvestimentoOutputSchema]
+    "/conta/{conta_id}", response_model=List[InvestimentoOutputSchema]
 )
 async def get_investimento_by_conta_id(
     conta_id: int, db: AsyncSession = Depends(get_db)

@@ -14,10 +14,13 @@ passivo_teste = {
 }
 
 
+URL_PASSIVO = "/passivos/"
+
+
 @pytest.mark.asyncio
 @pytest.mark.routers
 async def test_get_passivos_all(async_client):
-    response = await async_client.get("/passivo/")
+    response = await async_client.get(URL_PASSIVO)
     assert response.status_code == 200
 
 
@@ -25,7 +28,7 @@ async def test_get_passivos_all(async_client):
 @pytest.mark.routers
 async def test_get_passivo_by_frequencia(async_client):
     response = await async_client.get(
-        f"/passivo/frequencia/{passivo_teste['frequencia']}"
+        f"{URL_PASSIVO}frequencia/{passivo_teste['frequencia']}"
     )
     assert response.status_code == 200
 
@@ -34,7 +37,7 @@ async def test_get_passivo_by_frequencia(async_client):
 @pytest.mark.routers
 async def test_get_passivo_by_referencia(async_client):
     response = await async_client.get(
-        f"/passivo/referencia/{passivo_teste['referencia']}"
+        f"{URL_PASSIVO}referencia/{passivo_teste['referencia']}"
     )
     assert response.status_code == 200
 
@@ -43,6 +46,6 @@ async def test_get_passivo_by_referencia(async_client):
 @pytest.mark.routers
 async def test_get_passivo_eh_fixo(async_client):
     response = await async_client.get(
-        "/passivo/eh/fixo", params={"eh_fixo": passivo_teste["eh_fixo"]}
+        f"{URL_PASSIVO}eh/fixo", params={"eh_fixo": passivo_teste["eh_fixo"]}
     )
     assert response.status_code == 200

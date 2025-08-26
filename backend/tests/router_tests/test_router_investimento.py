@@ -11,10 +11,13 @@ investimento_teste = {
 }
 
 
+URL_INVESTIMENTO = "/investimentos/"
+
+
 @pytest.mark.asyncio
 @pytest.mark.routers
 async def test_get_investimentos_all(async_client):
-    response = await async_client.get("/investimento/")
+    response = await async_client.get(URL_INVESTIMENTO)
     assert response.status_code == 200
 
 
@@ -22,6 +25,6 @@ async def test_get_investimentos_all(async_client):
 @pytest.mark.routers
 async def test_get_investimento_by_tipo(async_client):
     response = await async_client.get(
-        f"/investimento/tipo/{investimento_teste['tipo']}"
+        f"{URL_INVESTIMENTO}tipo/{investimento_teste['tipo']}"
     )
     assert response.status_code == 200

@@ -8,10 +8,10 @@ from app.schema.ativo import AtivoSchema, AtivoOutputSchema, AtivoResponseSchema
 from app.service.ativo import AtivoService
 
 
-router_ativo = APIRouter(prefix="/ativo", tags=["Ativo"])
+router_ativo = APIRouter(prefix="/ativos", tags=["Ativo"])
 
 
-@router_ativo.post("/create", response_model=AtivoResponseSchema, status_code=201)
+@router_ativo.post("/", response_model=AtivoResponseSchema, status_code=201)
 async def create_ativo(ativo_schema: AtivoSchema, db: AsyncSession = Depends(get_db)):
     service = AtivoService(db)
     try:
@@ -20,7 +20,7 @@ async def create_ativo(ativo_schema: AtivoSchema, db: AsyncSession = Depends(get
         raise HTTPException(status_code=400, detail=str(e))
 
 
-@router_ativo.put("/update/{ativo_id}", response_model=AtivoResponseSchema)
+@router_ativo.put("/{ativo_id}", response_model=AtivoResponseSchema)
 async def update_ativo(
     ativo_id: int, ativo_schema: AtivoSchema, db: AsyncSession = Depends(get_db)
 ):
@@ -31,7 +31,7 @@ async def update_ativo(
         raise HTTPException(status_code=400, detail=str(error))
 
 
-@router_ativo.delete("/delete/{ativo_id}", response_model=AtivoResponseSchema)
+@router_ativo.delete("/{ativo_id}", response_model=AtivoResponseSchema)
 async def delete_ativo(ativo_id: int, db: AsyncSession = Depends(get_db)):
     service = AtivoService(db)
     try:
@@ -40,7 +40,7 @@ async def delete_ativo(ativo_id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=400, detail=str(error))
 
 
-@router_ativo.get("/id/{ativo_id}", response_model=AtivoOutputSchema)
+@router_ativo.get("/{ativo_id}", response_model=AtivoOutputSchema)
 async def get_ativo_by_id(ativo_id: int, db: AsyncSession = Depends(get_db)):
     service = AtivoService(db)
     try:
@@ -49,7 +49,7 @@ async def get_ativo_by_id(ativo_id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(status_code=400, detail=str(error))
 
 
-@router_ativo.get("/conta/id/{conta_id}", response_model=List[AtivoOutputSchema])
+@router_ativo.get("/conta/{conta_id}", response_model=List[AtivoOutputSchema])
 async def get_ativo_by_conta_id(
     conta_id: int, db: AsyncSession = Depends(get_db)
 ) -> list[AtivoOutputSchema]:

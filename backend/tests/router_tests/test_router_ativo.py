@@ -13,11 +13,13 @@ ativo_teste = {
     "conta_id": 1,
 }
 
+URL_ATIVO = "/ativos/"
+
 
 @pytest.mark.asyncio
 @pytest.mark.routers
 async def test_get_ativos_all(async_client):
-    response = await async_client.get("/ativo/")
+    response = await async_client.get(URL_ATIVO)
     assert response.status_code == 200
 
 
@@ -25,7 +27,7 @@ async def test_get_ativos_all(async_client):
 @pytest.mark.routers
 async def test_get_ativo_by_tipo_remuneracao(async_client):
     response = await async_client.get(
-        f"/ativo/remuneracao/{ativo_teste['tipo_remuneracao']}"
+        f"{URL_ATIVO}remuneracao/{ativo_teste['tipo_remuneracao']}"
     )
     assert response.status_code == 200
 
@@ -33,7 +35,9 @@ async def test_get_ativo_by_tipo_remuneracao(async_client):
 @pytest.mark.asyncio
 @pytest.mark.routers
 async def test_get_ativo_by_referencia(async_client):
-    response = await async_client.get(f"/ativo/referencia/{ativo_teste['referencia']}")
+    response = await async_client.get(
+        f"{URL_ATIVO}referencia/{ativo_teste['referencia']}"
+    )
     assert response.status_code == 200
 
 
@@ -41,6 +45,6 @@ async def test_get_ativo_by_referencia(async_client):
 @pytest.mark.routers
 async def test_get_ativo_eh_fixo(async_client):
     response = await async_client.get(
-        "/ativo/eh/fixo", params={"eh_fixo": ativo_teste["eh_fixo"]}
+        f"{URL_ATIVO}eh/fixo", params={"eh_fixo": ativo_teste["eh_fixo"]}
     )
     assert response.status_code == 200
