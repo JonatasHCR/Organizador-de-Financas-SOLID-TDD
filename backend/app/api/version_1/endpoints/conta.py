@@ -4,72 +4,84 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.schema.conta import ContaSchema, ContaOutputSchema, ContaResponseSchema
+from app.schema.conta import ContaSchema, ContaOutputSchema
 from app.service.conta import ContaService
 
 
-router_conta = APIRouter(prefix="/contas", tags=["Conta"])
+class ContaEndpoint:
+    def __init__(self):
+        self.service = ContaService
+        self.router = APIRouter(prefix="/contas", tags=["Conta"])
 
+        self.register_routes()
 
-@router_conta.post("/", response_model=ContaResponseSchema, status_code=201)
-async def create_conta(
-    conta_schema: ContaSchema, db: AsyncSession = Depends(get_db)
-) -> ContaResponseSchema:
-    service = ContaService(db)
-    try:
-        return await service.create(conta_schema)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    def register_routes(self):
+        self.router.post("/", response_model=ContaOutputSchema, status_code=201)(
+            self._create
+        )
+        self.router.put("/{id}", response_model=ContaOutputSchema, status_code=200)(
+            self._update
+        )
+        self.router.delete("/{id}", response_model=None, status_code=204)(self._delete)
 
+        self.router.get("/", response_model=list[ContaOutputSchema])(self._get_all)
+        self.router.get("/{id}", response_model=ContaOutputSchema)(self._get_by_id)
+        self.router.get("/nome/{nome}", response_model=list[ContaOutputSchema])(
+            self.get_by_nome
+        )
 
-@router_conta.put("/{conta_id}", response_model=ContaResponseSchema)
-async def update_conta(
-    conta_id: int, conta_schema: ContaSchema, db: AsyncSession = Depends(get_db)
-) -> ContaResponseSchema:
-    service = ContaService(db)
-    try:
-        return await service.update(conta_id, conta_schema)
-    except ValueError as error:
-        raise HTTPException(status_code=400, detail=str(error))
+    async def _get_by_id(
+        self, id: int, db: AsyncSession = Depends(get_db)
+    ) -> ContaOutputSchema:
+        service = self.service(db)
+        try:
+            return await service.get_by_id(id)
+        except ValueError as error:
+            raise HTTPException(
+                status_code=404,
+                detail=str(error).format(id=id, objeto="Conta"),
+            )
 
+    async def _get_all(
+        self, limit: int = 100, offset: int = 0, db: AsyncSession = Depends(get_db)
+    ) -> list[ContaOutputSchema]:
+        service = self.service(db)
+        return await service.get_all(limit=limit, offset=offset)
 
-@router_conta.delete("/{conta_id}", response_model=ContaResponseSchema)
-async def delete_conta(
-    conta_id: int, db: AsyncSession = Depends(get_db)
-) -> ContaResponseSchema:
-    service = ContaService(db)
-    try:
-        return await service.delete(conta_id)
-    except ValueError as error:
-        raise HTTPException(status_code=400, detail=str(error))
+    async def _create(
+        self, schema: ContaSchema, db: AsyncSession = Depends(get_db)
+    ) -> ContaOutputSchema:
+        service = self.service(db)
 
+        return await service.create(schema)
 
-@router_conta.get("/id/{conta_id}", response_model=ContaOutputSchema)
-async def get_conta_by_id(
-    conta_id: int, db: AsyncSession = Depends(get_db)
-) -> ContaOutputSchema:
-    service = ContaService(db)
-    try:
-        return await service.get_by_id(conta_id)
-    except ValueError as error:
-        raise HTTPException(status_code=400, detail=str(error))
+    async def _update(
+        self, id: int, schema: ContaSchema, db: AsyncSession = Depends(get_db)
+    ) -> ContaOutputSchema:
+        service = self.service(db)
+        try:
+            return await service.update(id, schema)
+        except ValueError as error:
+            raise HTTPException(
+                status_code=404,
+                detail=str(error).format(id=id, objeto="Conta"),
+            )
 
+    async def _delete(self, id: int, db: AsyncSession = Depends(get_db)) -> None:
+        service = self.service(db)
+        try:
+            return await service.delete(id)
+        except ValueError as error:
+            raise HTTPException(
+                status_code=404,
+                detail=str(error).format(id=id, objeto="Conta"),
+            )
 
-@router_conta.get("/name/{conta_name}", response_model=ContaOutputSchema)
-async def get_conta_by_id(
-    conta_name: str, db: AsyncSession = Depends(get_db)
-) -> ContaOutputSchema:
-    service = ContaService(db)
-    try:
-        return await service.get_by_nome(conta_name)
-    except ValueError as error:
-        raise HTTPException(status_code=400, detail=str(error))
-
-
-@router_conta.get("/", response_model=List[ContaOutputSchema])
-async def get_conta_all(db: AsyncSession = Depends(get_db)) -> list[ContaOutputSchema]:
-    service = ContaService(db)
-    try:
-        return await service.get_all()
-    except ValueError as error:
-        raise HTTPException(status_code=400, detail=str(error))
+    async def get_by_nome(
+        self, nome: str, db: AsyncSession = Depends(get_db)
+    ) -> list[ContaOutputSchema]:
+        service = self.service(db)
+        try:
+            return await service.get_by_nome(nome)
+        except ValueError as error:
+            raise HTTPException(status_code=404, detail=str(error))

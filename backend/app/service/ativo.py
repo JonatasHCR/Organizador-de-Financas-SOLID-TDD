@@ -1,58 +1,32 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.schema.ativo import AtivoSchema, AtivoOutputSchema, AtivoResponseSchema
+from app.schema.ativo import AtivoSchema, AtivoOutputSchema
 from app.repository.ativo import AtivoRepository
+from app.service.base import BaseService
 
 
-class AtivoService:
+class AtivoService(BaseService[AtivoRepository, AtivoSchema, AtivoOutputSchema]):
     def __init__(self, db: AsyncSession):
-        self.repository = AtivoRepository(db)
-
-    async def get_by_id(self, ativo_id: int) -> AtivoOutputSchema:
-        busca = await self.repository.get_by_id(ativo_id)
-
-        return busca
+        super().__init__(AtivoRepository, AtivoOutputSchema, db)
 
     async def get_by_conta_id(self, conta_id: int) -> list[AtivoOutputSchema]:
         busca = await self.repository.get_by_conta_id(conta_id)
 
-        return busca
+        return [self.output_schema.model_validate(objeto) for objeto in busca]
 
     async def get_by_referencia(self, referencia: str) -> list[AtivoOutputSchema]:
         busca = await self.repository.get_by_referencia(referencia)
 
-        return busca
+        return [self.output_schema.model_validate(objeto) for objeto in busca]
 
-    async def get_eh_fixo(self, eh_fixo: bool) -> list[AtivoOutputSchema]:
-        busca = await self.repository.get_eh_fixo(eh_fixo)
+    async def get_by_fixo(self, fixo: bool) -> list[AtivoOutputSchema]:
+        busca = await self.repository.get_by_fixo(fixo)
 
-        return busca
+        return [self.output_schema.model_validate(objeto) for objeto in busca]
 
-    async def get_by_tipo_remuneracao(
-        self, tipo_remuneracao: str
+    async def get_by_frequencia(
+        self, frequencia: str
     ) -> list[AtivoOutputSchema]:
-        busca = await self.repository.get_by_tipo_remuneracao(tipo_remuneracao)
+        busca = await self.repository.get_by_frequencia(frequencia)
 
-        return busca
-
-    async def get_all(self) -> list[AtivoOutputSchema]:
-        busca = await self.repository.get_all()
-
-        return busca
-
-    async def create(self, ativo_schema: AtivoSchema) -> AtivoResponseSchema:
-        resposta = await self.repository.create(ativo_schema)
-
-        return resposta
-
-    async def update(
-        self, ativo_id: int, ativo_schema: AtivoSchema
-    ) -> AtivoResponseSchema:
-        resposta = await self.repository.update(ativo_id, ativo_schema)
-
-        return resposta
-
-    async def delete(self, ativo_id: int) -> AtivoResponseSchema:
-        resposta = await self.repository.delete(ativo_id)
-
-        return resposta
+        return [self.output_schema.model_validate(objeto) for objeto in busca]

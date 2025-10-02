@@ -1,19 +1,9 @@
 from fastapi import FastAPI
-from contextlib import asynccontextmanager
+from fastapi.middleware.cors import CORSMiddleware
 
-from app.core.database import engine, Base
-from app.api.version_1.endpoints.conta import router_conta
-from app.api.version_1.endpoints.ativo import router_ativo
-from app.api.version_1.endpoints.passivo import router_passivo
-from app.api.version_1.endpoints.investimento import router_investimento
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    yield
-    await engine.dispose()
+from app.api.version_1.endpoints.conta import ContaEndpoint
+from app.api.version_1.endpoints.ativo import AtivoEndpoint
+from app.api.version_1.endpoints.passivo import PassivoEndpoint
 
 
 app = FastAPI(
@@ -27,10 +17,29 @@ app = FastAPI(
         {"name": "Passivo", "description": "Operações com Passivos"},
         {"name": "Investimento", "description": "Operações com Investimentos"},
     ],
-    lifespan=lifespan,
 )
 
-app.include_router(router_conta)
-app.include_router(router_ativo)
-app.include_router(router_passivo)
-app.include_router(router_investimento)
+origins = [
+    "http://localhost",
+    "http://localhost:9002",
+    "http://localhost:3000",
+    "http://127.0.0.1",
+    "http://127.0.0.1:9002",
+    "http://127.0.0.1:3000",
+    "http://10.0.0.199",
+    "http://10.0.0.199:9002",
+    "http://10.0.0.199:3000",
+]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(ContaEndpoint().router)
+app.include_router(AtivoEndpoint().router)
+app.include_router(PassivoEndpoint().router)

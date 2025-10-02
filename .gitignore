@@ -2,6 +2,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,flask,nextjs
 
 guia.md
+Fluxos.drawio
+.$Fluxos.drawio.bkp
 ### Flask ###
 instance/*
 !instance/.gitignore
